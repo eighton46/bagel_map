@@ -73,7 +73,12 @@ SNS で公開します。
 - 新しいスポットを追加（Google マップ上のカテゴリーとしてはベーグル専門店ではないが、ベーグルが有名なベーカリーやカフェの追加）
 
 ## 機能の実装方針予定
-
-- Ruby 3.1.2
-- Ruby on Rails 6.1.6
-- Google Maps Platform
+- バックエンド
+  - Ruby
+  - Ruby on Rails
+- フロントエンド
+  - HotWire
+- インフラ
+  - Fly.io
+- API
+  - Google Maps Platform
