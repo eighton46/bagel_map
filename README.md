@@ -85,3 +85,81 @@ SNS で公開します。
 
 ## 画面遷移図
 https://www.figma.com/design/fUJwAjQd0BwRJ7LpGOf2pv/%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3?node-id=0-1&t=5DstWTUJ0hwCyyRt-1
+
+## ER図
+```mermaid
+erDiagram
+
+  USERS {
+    integer id PK
+    string name
+    string email
+    string crypted_password
+    string avatar
+    integer role
+    string salt
+    datetime created_at
+    datetime updated_at
+    string reset_password_token
+    datetime reset_password_token_expires_at
+    datetime reset_password_email_sent_at
+    integer access_count_to_reset_password_page
+  }
+
+  BAGELSHOPS {
+    integer id PK
+    string name "店名"
+    string address "住所"
+    float latitude "緯度"
+    float longitude "経度"
+    string place_id
+    string opening_hours "開店時間"
+    string photo_reference "写真"
+    string rating "評価"
+    integer user_ratings_total "レビュー総数"
+    string website "WEBサイト"
+    string formatted_phone_number "電話番号"
+    datetime last_updated_at "最終更新日"
+    datetime created_at
+    datetime updated_at
+  }
+
+  REVIEWS {
+    integer id PK
+    integer user_id FK
+    integer bagel_shop_id FK
+    text comment
+    datetime created_at
+    datetime updated_at
+  }
+
+  TAGS {
+    integer id PK
+    string name
+    datetime created_at
+    datetime updated_at
+  }
+
+  REVIEWTAGS {
+    integer id PK
+    integer review_id FK
+    integer tag_id FK
+    datetime created_at
+    datetime updated_at
+  }
+
+  FAVORITES {
+    integer id PK
+    integer user_id FK
+    integer bagel_shop_id FK
+    datetime created_at
+    datetime updated_at
+  }
+
+  USERS ||--o{ REVIEWS : "has many"
+  BAGELSHOPS ||--o{ REVIEWS : "has many"
+  USERS ||--o{ FAVORITES : "has many"
+  BAGELSHOPS ||--o{ FAVORITES : "has many"
+  REVIEWS ||--o{ REVIEWTAGS : "has many"
+  TAGS ||--o{ REVIEWTAGS : "has many"
+```
