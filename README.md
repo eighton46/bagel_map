@@ -112,10 +112,10 @@ erDiagram
     string address "住所"
     float latitude "緯度"
     float longitude "経度"
-    string place_id
+    string place_id "Google Places APIの一意識別子"
     string opening_hours "開店時間"
     string photo_reference "写真"
-    string rating "評価"
+    integer rating "評価"
     integer user_ratings_total "レビュー総数"
     string website "WEBサイト"
     string formatted_phone_number "電話番号"
