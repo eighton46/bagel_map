@@ -14,3 +14,12 @@ RUN mkdir /myapp
 WORKDIR /myapp
 RUN gem install bundler
 COPY . /myapp
+
+#bundle installを実行
+RUN bundle install
+
+#コンテナがリッスンするPORTを指定
+EXPOSE 3000
+
+#コンテナ作成時にサーバーを立てる
+CMD ["rails", "server", "-b", "0.0.0.0"]
