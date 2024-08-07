@@ -4,6 +4,7 @@ services:
     restart: always
     environment:
       TZ: Asia/Tokyo
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     volumes:
       - postgresql_data:/var/lib/postgresql
@@ -12,8 +13,8 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d myapp_development -U postgres"]
       interval: 10s
-      timeout: 10s
-      retries: 3
+      timeout: 5s
+      retries: 5
   web:
     build:
       context: .
@@ -29,6 +30,8 @@ services:
       TZ: Asia/Tokyo
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     depends_on:
       db:
         condition: service_healthy
