@@ -30,9 +30,11 @@ COPY . /myapp
 
 #bundle installを実行
 RUN bundle install
+RUN yarn install
 
-#assetsをプリコンパイル
-RUN bundle exec rails assets:precompile
+# アセットを先にビルドするか確認し、Fly.ioでのデプロイ時のみ実行
+ARG FLY_DEPLOY=false
+RUN if [ "$FLY_DEPLOY" = "true" ]; then bundle exec rails assets:precompile; fi
 
 #コンテナがリッスンするPORTを指定
 EXPOSE 3000
