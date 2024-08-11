@@ -1,9 +1,11 @@
 .top-wrapper {
   background-image: url('top_image.jpg');
-  background-size: 100% auto;
-  height: calc(100vh - 134px);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center center;
+  min-height: 100vh;
   position: relative;
-  background-position: center;
 
   .top-inner-text {
     position: absolute;
@@ -23,7 +25,7 @@
 
 .btn-custom {
   background-color: #A9907E;
-  color: white; /* ボタンの文字色を白に設定 */
+  color: whitesmoke; /* ボタンの文字色を白に設定 */
   border: none; /* ボーダーをなくす */
   padding: 0.5rem 1rem; /* パディングを設定 */
   border-radius: 0.25rem; /* 角を丸くする */
@@ -36,4 +38,22 @@
 
 .btn-custom:hover {
   background-color: #8F7C68; /* ホバー時の背景色を設定 */
+}
+
+.btn-reverse {
+  background-color: whitesmoke; /* 背景色を白に設定 */
+  color: #A9907E; /* ボタンの文字色を元の背景色に設定 */
+  border: none; /* ボーダーをなくす */
+  padding: 0.5rem 1rem; /* パディングを設定 */
+  border-radius: 0.25rem; /* 角を丸くする */
+  text-align: center; /* テキストを中央揃えにする */
+  text-decoration: none; /* テキストの下線をなくす */
+  display: inline-block; /* インラインブロックに設定 */
+  font-size: 1rem; /* フォントサイズを設定 */
+  cursor: pointer; /* カーソルをポインターにする */
+}
+
+.btn-reverse:hover {
+  background-color: #8F7C68; /* ホバー時の背景色を設定 */
+  color: whitesmoke; /* ボタンの文字色を白に設定 */
 }
