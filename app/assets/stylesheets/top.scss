@@ -57,3 +57,9 @@
   background-color: #8F7C68; /* ホバー時の背景色を設定 */
   color: whitesmoke; /* ボタンの文字色を白に設定 */
 }
+
+.link_text {
+  text-decoration: none;
+  color: whitesmoke;
+  cursor: pointer; /* カーソルをポインターにする */
+}
