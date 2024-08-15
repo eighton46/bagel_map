@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for bagle-map on 2024-07-29T16:23:37+09:00
+# fly.toml app configuration file generated for bagel-map on 2024-08-15T15:08:19+09:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'bagle-map'
+app = 'bagel-map'
 primary_region = 'nrt'
 
 [build]
@@ -21,3 +21,6 @@ primary_region = 'nrt'
 
 [[vm]]
   size = 'shared-cpu-1x'
+
+[deploy]
+  release_command = './bin/rails db:prepare'
