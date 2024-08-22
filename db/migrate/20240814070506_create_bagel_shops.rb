@@ -7,7 +7,7 @@ class CreateBagelShops < ActiveRecord::Migration[7.1]
       t.float :longitude, null: false
       t.string :place_id, null: false
       t.string :opening_hours
-      t.string :photo_reference
+      t.text :photo_references
       t.float :rating
       t.integer :user_ratings_total
       t.string :website
