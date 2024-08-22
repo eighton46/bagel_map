@@ -12,7 +12,6 @@ class CreateBagelShops < ActiveRecord::Migration[7.1]
       t.integer :user_ratings_total
       t.string :website
       t.string :formatted_phone_number
-      t.datetime :last_updated_at
 
       t.timestamps
     end

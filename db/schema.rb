@@ -26,7 +26,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_14_070506) do
     t.integer "user_ratings_total"
     t.string "website"
     t.string "formatted_phone_number"
-    t.datetime "last_updated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
