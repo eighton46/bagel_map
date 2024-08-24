@@ -21,12 +21,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_14_070506) do
     t.float "longitude", null: false
     t.string "place_id", null: false
     t.string "opening_hours"
-    t.string "photo_reference"
+    t.text "photo_references"
     t.float "rating"
     t.integer "user_ratings_total"
     t.string "website"
     t.string "formatted_phone_number"
-    t.datetime "last_updated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
