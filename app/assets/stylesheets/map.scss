@@ -1,0 +1,20 @@
+.custom-map-control-button {
+  background-color: white;
+  border: none;
+  outline: none;
+  width: 40px;
+  height: 40px;
+  border-radius:5%;
+  box-shadow: 0 2px 6px rgba(0,0,0,.3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.custom-map-control-button i {
+  font-size: 25px; /* アイコンサイズ */
+  color: gray; /* アイコンカラー */
+}
