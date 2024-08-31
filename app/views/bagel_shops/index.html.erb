@@ -15,4 +15,5 @@
   <div class="row">
     <%= render partial: 'shop_list', collection: @bagel_shops, as: :bagel_shop %>
   </div>
+  <%= paginate @bagel_shops, theme: 'bootstrap-5' %>
 </div>
