@@ -1,12 +1,19 @@
-<%
-=begin%>
- <input id="address" type="textbox" value="GeekSalon">
-<input type="button" value="Encode" onclick="codeAddress()">
-<div id="display">何かが表示される、、、、！</div> 
-<%
-=end%>
-
-<div id="map" style="height:700px; width:100%;"></div>
-
 <%= javascript_include_tag "gmap" %>
 <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GMAPS_API_KEY'] %>&callback=initMap" async defer></script>
+
+<%#
+<input id="address" type="textbox" value="GeekSalon">
+<input type="button" value="Encode" onclick="codeAddress()">
+<div id="display">何かが表示される、、、、！</div>
+%>
+
+<div class="contaner m-3 pb-3 border-bottom border-3">
+  <div id="map" style="height:700px; width:100%;"></div>
+</div>
+<div class="contaner m-3">
+  <h3 class="mb-3 pb-3 border-bottom border-3">店舗リスト</h3>
+  <div class="row">
+    <%= render partial: 'shop_list', collection: @bagel_shops, as: :bagel_shop %>
+  </div>
+  <%= paginate @bagel_shops, theme: 'bootstrap-5' %>
+</div>
