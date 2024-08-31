@@ -1,0 +1,38 @@
+<div class="col-sm-12 col-lg-3 mb-3">
+  <div id="bagel_shop-id-<% bagel_shop.id %>">
+    <div class="card">
+      <% if bagel_shop.photo_references.present? %>
+        <!--
+        <%= image_tag "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=#{bagel_shop.photo_references.split(",").first}&key=#{ENV['GMAPS_API_KEY']}", alt: bagel_shop.name, class: "card-img-top", width: "300", height:"300", style: "object-fit: cover;" %>
+        -->
+        <%= image_tag "bagel_shop_placeholder.jpg", class: "card-img-top", width: "300", height:"300", style: "object-fit: cover;" %>
+      <% else %>
+        <%= image_tag "bagel_shop_placeholder.jpg", class: "card-img-top", width: "300", height:"300", style: "object-fit: cover;" %>
+      <% end %>
+      <div class="card-body">
+        <div class="d-flex">
+          <h5 class="card-title">
+            <%= link_to bagel_shop.name, bagel_shop_path(bagel_shop.id) %>
+          </h5>
+          <!--
+          <div class='ms-auto'>
+            <%= link_to '#', id: "button-edit-#{bagel_shop.id}" do %>
+              <i class="bi bi-pencil-fill"></i>
+            <% end %>
+            <%= link_to '#', id: "button-delete-#{bagel_shop.id}", method: :delete, data: {confirm: ''} do %>
+              <i class="bi bi-trash-fill"></i>
+            <% end %>
+          </div>
+          -->
+        </div>
+        <ul class="list-inline">
+          <li><i class="fa-solid fa-store"></i><%= bagel_shop.address %></li>
+          <li><i class="fa-solid fa-star" style="color: #FFD43B;"></i><%= bagel_shop.rating %> (<%= bagel_shop.user_ratings_total %>)</li>
+          <!--
+          <li><i class="fa-regular fa-calendar"></i><%= bagel_shop.opening_hours %></li>
+          -->
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
