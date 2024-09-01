@@ -1,0 +1,6 @@
+ja:
+  bagel_shops:
+    index:
+      title: 店舗一覧
+    show:
+      title: 店舗詳細
