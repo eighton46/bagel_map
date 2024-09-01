@@ -11,7 +11,7 @@
   <div id="map" style="height:700px; width:100%;"></div>
 </div>
 <div class="contaner m-3">
-  <h3 class="mb-3 pb-3 border-bottom border-3">店舗リスト</h3>
+  <h2 class="mb-3 pb-3 border-bottom border-3"><%= t('.title') %></h2>
   <div class="row">
     <%= render partial: 'shop_list', collection: @bagel_shops, as: :bagel_shop %>
   </div>
