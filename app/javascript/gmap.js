@@ -1,6 +1,6 @@
-let map, geocoder;
+let map, geocoder, centerPin, infoWindow;
 let markers = [];
-const apiKey = gon.api_key
+const apiKey = gon.api_key;
 
 const defaultLocation = { lat: 35.68123620000001, lng: 139.7671248 };
 const bagelShops = gon.bagel_shops;
@@ -38,7 +38,7 @@ function initMap() {
   });
 
   // infoWindowを作成
-  let infoWindow = new google.maps.InfoWindow({
+  infoWindow = new google.maps.InfoWindow({
     pixelOffset: new google.maps.Size(0, -50),
     maxWidth: 300
   });
@@ -62,17 +62,13 @@ function initMap() {
         infoWindow.setContent(`
         <div class="custom-info">
           <div class="custom-info-item photo">
-            <img src="${photoUrl}" alt="${
-          shop.name
-        }" style="width:100%;height:auto;">
+            <img src="${photoUrl}" alt="${shop.name}" style="width:100%;height:auto;">
           </div>
           <div class="custom-info-item name">${shop.name}</div>
           <div class="custom-info-item address">${shop.address}</div>
-          <div class="custom-info-item rating">⭐${
-            shop.rating ? shop.rating : "評価なし"
-          }</div>
+          <div class="custom-info-item rating">⭐${shop.rating ? shop.rating : "評価なし"}</div>
           <div class="custom-info-item link_to_detail">
-            <a href=bagel_shop_path(${shop.id}) target="_blank">店舗詳細</a>
+            <a href="/bagel_shops/${shop.id}" >店舗詳細</a>
           </div>
         </div>
         `);
@@ -82,11 +78,10 @@ function initMap() {
         <div class="custom-info">
           <div class="custom-info-item name">${shop.name}</div>
           <div class="custom-info-item address">${shop.address}</div>
-          <div class="custom-info-item rating">⭐${
-            shop.rating ? shop.rating : "評価なし"
+          <div class="custom-info-item rating">⭐${shop.rating ? shop.rating : "評価なし"
           }</div>
           <div class="custom-info-item link_to_detail">
-            <a href=bagel_shop_path(${shop.id}) target="_blank">店舗詳細</a>
+            <a href="/bagel_shops/${shop.id}" >店舗詳細</a>
           </div>
         </div>
         `);
@@ -150,23 +145,6 @@ function initMap() {
     infoWindow.open(map);
   }
 
-  // 現在地の緯度と経度を取得する関数
-  function getCurrentLocation(){
-    // Try HTML5 geolocation.
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          }
-        });
-      } else {
-        // Browser doesn't support Geolocation
-        handleLocationError(false, infoWindow, map.getCenter());
-      }
-    }
-
   // 現在地を取得して表示する関数
   function showCurrentLocation(){
     // Try HTML5 geolocation.
@@ -178,20 +156,12 @@ function initMap() {
             lng: position.coords.longitude,
           };
 
-          // infoWindow.setPosition(pos);
-          // infoWindow.setContent("Location found.");
-          // infoWindow.open(map);
           map.setCenter(pos);
 
-          // マーカーを追加する前に既存のマーカーをクリア
-          // clearMarkers();
-
           // 現在地にマーカーを移動させる
-          centerPin = new google.maps.Marker({
-            position: pos,
-            map: map,
-          });
-          // markers.push(marker); // マーカーを配列に追加
+          if (centerPin) {
+            centerPin.setPosition(pos);
+          }
         },
         () => {
           handleLocationError(true, infoWindow, map.getCenter());
@@ -204,3 +174,8 @@ function initMap() {
   }
 
   window.initMap = initMap;
+
+  window.addEventListener("popstate", function (e) {
+    window.location.reload();
+    console.log("Reload!");
+  });

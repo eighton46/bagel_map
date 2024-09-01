@@ -8,7 +8,7 @@
 
       <div class="card mb-4">
         <% if @bagel_shop.photo_references.present? %>
-          <%= image_tag "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=#{@bagel_shop.photo_references.split(",").first}&key=#{ENV['GMAPS_API_KEY']}", alt: @bagel_shop.name, size: "400x400", class: "card-img-top", style: "object-fit: cover;" %>
+          <%= image_tag "https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=#{@bagel_shop.photo_references.split(",").first}&key=#{ENV['GMAPS_API_KEY']}", alt: @bagel_shop.name, size: "400x400", class: "card-img-top", style: "object-fit: cover;" %>
         <% else %>
           <%= image_tag "bagel_shop_placeholder.jpg", class: "card-img-top", width: "400", height: "400", style: "object-fit: cover;" %>
         <% end %>

@@ -1,5 +1,6 @@
 <%= javascript_include_tag "gmap" %>
-<script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GMAPS_API_KEY'] %>&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GMAPS_API_KEY'] %>&callback=initMap" async defer>
+</script>
 
 <%#
 <input id="address" type="textbox" value="GeekSalon">
@@ -8,7 +9,7 @@
 %>
 
 <div class="contaner m-3 pb-3 border-bottom border-3">
-  <div id="map" style="height:700px; width:100%;"></div>
+  <div id="map" style="height:600px; width:100%;"></div>
 </div>
 <div class="contaner m-3">
   <h2 class="mb-3 pb-3 border-bottom border-3"><%= t('.title') %></h2>
