@@ -14,12 +14,12 @@ function initMap() {
     return;
   }
 
-  // const icons = {
-  //   bagel_shop: {
-  //     url: './app/assets/images/bagel_shop_ping.png',
-  //     scaledSize: new google.maps.Size(52, 52)
-  //   }
-  // };
+  const icons = {
+    "bagel_shop": {
+      url: gon.bagel_shop_icon,
+      scaledSize: new google.maps.Size(52, 52),
+    }
+  };
 
   // 初期位置の設定
   showCurrentLocation();
@@ -56,10 +56,7 @@ function initMap() {
     let marker = new google.maps.Marker({
       position: markerLatLng,
       map: map,
-      icon: {
-        url: gon.bagel_shop_icon,
-        scaledSize: new google.maps.Size(52, 52),
-      },
+      icon: icons["bagel_shop"]
     });
 
     // マーカーがクリックされたときに情報ウィンドウを表示
