@@ -1,6 +1,7 @@
 <%= javascript_include_tag "gmap" %>
 <script>
-  gon.bagel_shop_icon = "<%= asset_path('bagel_shop_ping.png') %>";
+  gon.opening_shop_icon = "<%= asset_path('opening_shop_ping.png') %>";
+  gon.closed_shop_icon = "<%= asset_path('closed_shop_ping.png') %>";
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GMAPS_API_KEY'] %>&callback=initMap" async defer>
 </script>
