@@ -1,6 +1,7 @@
 <%= javascript_include_tag "shop_detail_map" %>
 <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GMAPS_API_KEY'] %>&callback=initMap" async defer></script>
 
+<% content_for(:title, @bagel_shop.name) %>
 <div class="container mt-4">
   <div class="row">
     <div class="col-lg-8 offset-lg-2">
