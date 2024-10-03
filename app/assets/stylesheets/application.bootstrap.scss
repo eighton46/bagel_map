@@ -12,6 +12,27 @@
 
 .pagination {
   justify-content: center;
+  margin-top: 20px;
+
+  .page-item {
+    margin: 0 5px;
+
+    &.active .page-link {
+      background-color: #A9907E; // アクティブページの背景色
+      border-color: #A9907E;
+      color: #fff; // アクティブページのテキストカラー
+    }
+
+    .page-link {
+      color: #A9907E; // ページリンクのテキストカラー
+      border: 1px solid #A9907E; // ボーダーカラー
+
+      &:hover {
+        background-color: #A9907E; // ホバー時の背景色
+        color: #fff; // ホバー時のテキストカラー
+      }
+    }
+  }
 }
 
 body {
