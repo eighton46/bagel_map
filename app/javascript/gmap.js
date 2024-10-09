@@ -17,15 +17,20 @@ function initMap() {
 
   // ピンに使用するアイコンの設定
   const icons = {
-    "opening_shop": {
+    opening_shop: {
       url: gon.opening_shop_icon,
       scaledSize: new google.maps.Size(52, 52),
     },
-    "closed_shop": {
+    closed_shop: {
       url: gon.closed_shop_icon,
       scaledSize: new google.maps.Size(52, 52),
-    }
+    },
   };
+
+  // 現在地の取得を開始する前にローディングを表示
+  const loadingElement = document.getElementById("loading");
+  mapElement.classList.add("loading");
+  loadingElement.style.display = "flex";
 
   // 初期位置の設定
   // デフォルトで現在地取得
@@ -55,7 +60,7 @@ function initMap() {
   // infoWindowを作成
   infoWindow = new google.maps.InfoWindow({
     pixelOffset: new google.maps.Size(0, -50),
-    maxWidth: 300
+    maxWidth: 300,
   });
 
   // Railsから保存された店舗情報を取得して地図上にマーカーを表示
@@ -63,28 +68,30 @@ function initMap() {
     let markerLatLng = { lat: shop.latitude, lng: shop.longitude }; // 緯度経度のデータ作成
     let operatingHours = "";
     let icon = icons["closed_shop"]; // デフォルトでは「閉店中」のアイコン
-    let storeStatus = "準備中"
+    let storeStatus = "準備中";
 
-    if (shop.opening_hours) { // 営業時間情報があれば営業時間をパース
+    if (shop.opening_hours) {
+      // 営業時間情報があれば営業時間をパース
       operatingHours = parseOperatingHours(shop.opening_hours);
 
       // 営業時間がパースできたら、営業中かどうかを判断
       if (isOpen(operatingHours)) {
         icon = icons["opening_shop"]; // 営業中の場合は「営業中」のアイコン
-        storeStatus = "営業中"
-      };
-    };
+        storeStatus = "営業中";
+      }
+    }
 
     let marker = new google.maps.Marker({
       position: markerLatLng,
       map: map,
-      icon: icon
+      icon: icon,
     });
 
     // マーカーがクリックされたときに情報ウィンドウを表示
     marker.addListener("click", function () {
       // photo_referenceをカンマで分割して最初の画像を使用
-      if (shop.photo_references) { // 画像がある場合
+      if (shop.photo_references) {
+        // 画像がある場合
         const photoReferences = shop.photo_references.split(",");
         const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReferences[0]}&key=${apiKey}`;
 
@@ -107,7 +114,8 @@ function initMap() {
           </div>
         </div>
         `);
-      } else { // 画像がない場合
+      } else {
+        // 画像がない場合
         // infoWindowの内容を更新
         infoWindow.setContent(`
         <div class="custom-info">
@@ -122,7 +130,7 @@ function initMap() {
           </div>
         </div>
         `);
-      };
+      }
 
       // infoWindowを指定したマーカーの位置に表示
       infoWindow.open(map, marker);
@@ -151,8 +159,8 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.setPosition(pos);
   infoWindow.setContent(
     browserHasGeolocation
-    ? "Error: 現在地を取得できませんでした"
-    : "Error: このブラウザはGeolocationをサポートしていません"
+      ? "Error: 現在地を取得できませんでした"
+      : "Error: お使いのブラウザでは現在地取得がサポートされていません"
   );
   infoWindow.open(map);
 }
@@ -174,14 +182,23 @@ function showCurrentLocation(){
         if (centerPin) {
           centerPin.setPosition(pos);
         }
+
+        // 位置情報が取得できたらローディングを非表示
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("map").classList.remove("loading");
       },
       () => {
+        // エラーハンドリング
         handleLocationError(true, infoWindow, map.getCenter());
+        document.getElementById("loading").style.display = "none"; // エラー時も非表示
+        document.getElementById("map").classList.remove("loading"); // エラー時も元に戻す
       }
     );
   } else {
-    // Browser doesn't support Geolocation
-      handleLocationError(false, infoWindow, map.getCenter());
+    // Geolocation APIがサポートされていない場合
+    handleLocationError(false, infoWindow, map.getCenter());
+    document.getElementById("loading").style.display = "none"; // 非表示
+    document.getElementById("map").classList.remove("loading"); // 非表示
   }
 }
 
