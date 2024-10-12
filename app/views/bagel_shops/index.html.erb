@@ -1,6 +1,25 @@
 <%= javascript_include_tag "gmap" %>
+<script>
+  gon.opening_shop_icon = "<%= asset_path('opening_shop_ping.png') %>";
+  gon.closed_shop_icon = "<%= asset_path('closed_shop_ping.png') %>";
+</script>
 <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GMAPS_API_KEY'] %>&callback=initMap" async defer>
 </script>
+
+<div id="loading" style="display: none;">
+  <p id="loading-text" class="mb-0">
+    <span>現</span>
+    <span>在</span>
+    <span>地</span>
+    <span>読</span>
+    <span>み</span>
+    <span>込</span>
+    <span>み</span>
+    <span>中</span>
+    <span>…</span>
+  </p>
+  <div class="spinner m-4"></div> <!-- ここにスピナーのスタイルを適用 -->
+</div>
 
 <%#
 <input id="address" type="textbox" value="GeekSalon">
@@ -8,11 +27,12 @@
 <div id="display">何かが表示される、、、、！</div>
 %>
 
-<div class="contaner m-3 pb-3 border-bottom border-3">
+<% content_for(:title, t('.title')) %>
+<div class="contaner m-3">
   <div id="map" style="height:600px; width:100%;"></div>
 </div>
 <div class="contaner m-3">
-  <h2 class="mb-3 pb-3 border-bottom border-3"><%= t('.title') %></h2>
+  <h2 class="my-3 py-3 border-top border-3 border-bottom border-3"><%= t('.title') %></h2>
   <div class="row">
     <%= render partial: 'shop_list', collection: @bagel_shops, as: :bagel_shop %>
   </div>

@@ -6,6 +6,7 @@ const defaultLocation = { lat: 35.68123620000001, lng: 139.7671248 };
 const bagelShops = gon.bagel_shops;
 const display = document.getElementById("display");
 
+// 関数定義部分
 function initMap() {
   geocoder = new google.maps.Geocoder();
   const mapElement = document.getElementById("map");
@@ -14,8 +15,27 @@ function initMap() {
     return;
   }
 
+  // ピンに使用するアイコンの設定
+  const icons = {
+    opening_shop: {
+      url: gon.opening_shop_icon,
+      scaledSize: new google.maps.Size(52, 52),
+    },
+    closed_shop: {
+      url: gon.closed_shop_icon,
+      scaledSize: new google.maps.Size(52, 52),
+    },
+  };
+
+  // 現在地の取得を開始する前にローディングを表示
+  const loadingElement = document.getElementById("loading");
+  mapElement.classList.add("loading");
+  loadingElement.style.display = "flex";
+
   // 初期位置の設定
+  // デフォルトで現在地取得
   showCurrentLocation();
+  // 現在地取得できないとき
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: defaultLocation.lat, lng: defaultLocation.lng }, //東京駅
     zoom: 15,
@@ -40,53 +60,77 @@ function initMap() {
   // infoWindowを作成
   infoWindow = new google.maps.InfoWindow({
     pixelOffset: new google.maps.Size(0, -50),
-    maxWidth: 300
+    maxWidth: 300,
   });
 
   // Railsから保存された店舗情報を取得して地図上にマーカーを表示
   bagelShops.forEach(function (shop) {
     let markerLatLng = { lat: shop.latitude, lng: shop.longitude }; // 緯度経度のデータ作成
+    let operatingHours = "";
+    let icon = icons["closed_shop"]; // デフォルトでは「閉店中」のアイコン
+    let storeStatus = "準備中";
+
+    if (shop.opening_hours) {
+      // 営業時間情報があれば営業時間をパース
+      operatingHours = parseOperatingHours(shop.opening_hours);
+
+      // 営業時間がパースできたら、営業中かどうかを判断
+      if (isOpen(operatingHours)) {
+        icon = icons["opening_shop"]; // 営業中の場合は「営業中」のアイコン
+        storeStatus = "営業中";
+      }
+    }
+
     let marker = new google.maps.Marker({
       position: markerLatLng,
       map: map,
+      icon: icon,
     });
 
     // マーカーがクリックされたときに情報ウィンドウを表示
     marker.addListener("click", function () {
       // photo_referenceをカンマで分割して最初の画像を使用
-      if (shop.photo_references) { // 画像がある場合
+      if (shop.photo_references) {
+        // 画像がある場合
         const photoReferences = shop.photo_references.split(",");
         const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReferences[0]}&key=${apiKey}`;
 
         // infoWindowの内容を更新
         infoWindow.setContent(`
         <div class="custom-info">
+          <div class="custom-info-item store_status">${storeStatus}</div>
           <div class="custom-info-item photo">
-            <img src="${photoUrl}" alt="${shop.name}" style="width:100%;height:auto;">
+            <img src="${photoUrl}" alt="${
+          shop.name
+        }" style="width:100%;height:auto;">
           </div>
           <div class="custom-info-item name">${shop.name}</div>
           <div class="custom-info-item address">${shop.address}</div>
-          <div class="custom-info-item rating">⭐${shop.rating ? shop.rating : "評価なし"}</div>
-          <div class="custom-info-item link_to_detail">
-            <a href="/bagel_shops/${shop.id}" >店舗詳細</a>
-          </div>
-        </div>
-        `);
-      } else { // 画像がない場合
-        // infoWindowの内容を更新
-        infoWindow.setContent(`
-        <div class="custom-info">
-          <div class="custom-info-item name">${shop.name}</div>
-          <div class="custom-info-item address">${shop.address}</div>
-          <div class="custom-info-item rating">⭐${shop.rating ? shop.rating : "評価なし"
+          <div class="custom-info-item rating">⭐${
+            shop.rating ? shop.rating : "評価なし"
           }</div>
           <div class="custom-info-item link_to_detail">
             <a href="/bagel_shops/${shop.id}" >店舗詳細</a>
           </div>
         </div>
         `);
-      };
-
+      } else {
+        // 画像がない場合
+        // infoWindowの内容を更新
+        infoWindow.setContent(`
+        <div class="custom-info">
+          <div class="custom-info-item store_status">${storeStatus}</div>
+          <div class="custom-info-item name">${shop.name}</div>
+          <div class="custom-info-item address">${shop.address}</div>
+          <div class="custom-info-item rating">⭐${
+            shop.rating ? shop.rating : "評価なし"
+          }</div>
+          <div class="custom-info-item link_to_detail">
+            <a href="/bagel_shops/${shop.id}" >店舗詳細</a>
+          </div>
+        </div>
+        `);
+      }
 
       // infoWindowを指定したマーカーの位置に表示
       infoWindow.open(map, marker);
@@ -101,81 +145,130 @@ function initMap() {
   locationButton.addEventListener("click", showCurrentLocation);
 }
 
-  // 地図検索
-  window.codeAddress = function () {
-    let inputAddress = document.getElementById("address").value;
 
-    geocoder.geocode({ address: inputAddress }, function (results, status) {
-      if (status == "OK") {
-        // マーカーを作成
-        map.setCenter(results[0].geometry.location);
-
-        // マーカーを追加する前に既存のマーカーをクリア
-        clearMarkers();
-
-        var marker = new google.maps.Marker({
-          map: map,
-          position: results[0].geometry.location,
-        });
-        markers.push(marker); // マーカーを配列に追加
-
-        display.textContent = "検索結果：" + results[0].geometry.location;
-      } else {
-        alert("該当する結果がありませんでした：" + status);
-      }
-    });
-  };
-
-  // 既存のマーカーをすべて消去する関数
-  function clearMarkers() {
-    for (let i = 0; i < markers.length; i++) {
-      markers[i].setMap(null);
-    }
-    markers = []; // 配列をクリア
+// 既存のマーカーをすべて消去する関数
+function clearMarkers() {
+  for (let i = 0; i < markers.length; i++) {
+    markers[i].setMap(null);
   }
+  markers = []; // 配列をクリア
+}
 
-  // infoWindowのエラーメッセージを出力する関数
-  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(
-      browserHasGeolocation
-        ? "Error: 現在地を取得できませんでした"
-        : "Error: このブラウザはGeolocationをサポートしていません"
-    );
-    infoWindow.open(map);
-  }
+// infoWindowのエラーメッセージを出力する関数
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+  infoWindow.setPosition(pos);
+  infoWindow.setContent(
+    browserHasGeolocation
+      ? "Error: 現在地を取得できませんでした"
+      : "Error: お使いのブラウザでは現在地取得がサポートされていません"
+  );
+  infoWindow.open(map);
+}
 
-  // 現在地を取得して表示する関数
-  function showCurrentLocation(){
-    // Try HTML5 geolocation.
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
+// 現在地を取得して表示する関数
+function showCurrentLocation(){
+  // Try HTML5 geolocation.
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
 
-          map.setCenter(pos);
+        map.setCenter(pos);
 
-          // 現在地にマーカーを移動させる
-          if (centerPin) {
-            centerPin.setPosition(pos);
-          }
-        },
-        () => {
-          handleLocationError(true, infoWindow, map.getCenter());
+        // 現在地にマーカーを移動させる
+        if (centerPin) {
+          centerPin.setPosition(pos);
         }
-      );
-    } else {
-      // Browser doesn't support Geolocation
-      handleLocationError(false, infoWindow, map.getCenter());
-    }
+
+        // 位置情報が取得できたらローディングを非表示
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("map").classList.remove("loading");
+      },
+      () => {
+        // エラーハンドリング
+        handleLocationError(true, infoWindow, map.getCenter());
+        document.getElementById("loading").style.display = "none"; // エラー時も非表示
+        document.getElementById("map").classList.remove("loading"); // エラー時も元に戻す
+      }
+    );
+  } else {
+    // Geolocation APIがサポートされていない場合
+    handleLocationError(false, infoWindow, map.getCenter());
+    document.getElementById("loading").style.display = "none"; // 非表示
+    document.getElementById("map").classList.remove("loading"); // 非表示
+  }
+}
+
+// 入力データをパースしてオブジェクトに変換する関数
+function parseOperatingHours(operatingHoursString) {
+  const operatingHours = {};
+  const lines = operatingHoursString.split("\n");
+
+  lines.forEach(line => {
+    const [day, hours] = line.split(": ");
+    operatingHours[day] = hours;
+  });
+
+  return operatingHours;
+}
+
+// 現在の曜日と時間から営業中かどうか判断する関数
+function isOpen(operatingHours, now = new Date()) {
+  const daysOfWeek = ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"];
+  const currentDayOfWeek = daysOfWeek[now.getDay()];
+  const currentHour = now.getHours();
+  const currentMinute = now.getMinutes();
+
+  // 当日の営業時間を取得
+  const hours = operatingHours[currentDayOfWeek];
+
+  if (hours === "定休日") {
+    return false;
   }
 
-  window.initMap = initMap;
+  const [openTime, closeTime] = hours.split("～").map(time => time.trim());
+  const [openHour, openMinute] = openTime.split("時").map(part => parseInt(part));
+  const [closeHour, closeMinute] = closeTime.split("時").map(part => parseInt(part));
 
-  window.addEventListener("popstate", function (e) {
-    window.location.reload();
-    console.log("Reload!");
+  // 現在時刻が営業中かどうかをチェック
+  const isOpenNow = (currentHour > openHour || (currentHour === openHour && currentMinute >= openMinute)) &&
+                    (currentHour < closeHour || (currentHour === closeHour && currentMinute <= closeMinute));
+
+  return isOpenNow;
+}
+
+// 画面表示部分
+// 地図検索
+window.codeAddress = function () {
+  let inputAddress = document.getElementById("address").value;
+
+  geocoder.geocode({ address: inputAddress }, function (results, status) {
+    if (status == "OK") {
+      // マーカーを作成
+      map.setCenter(results[0].geometry.location);
+
+      // マーカーを追加する前に既存のマーカーをクリア
+      clearMarkers();
+
+      var marker = new google.maps.Marker({
+        map: map,
+        position: results[0].geometry.location,
+      });
+      markers.push(marker); // マーカーを配列に追加
+
+      display.textContent = "検索結果：" + results[0].geometry.location;
+    } else {
+      alert("該当する結果がありませんでした：" + status);
+    }
   });
+};
+
+window.initMap = initMap;
+
+window.addEventListener("popstate", function (e) {
+  window.location.reload();
+  console.log("Reload!");
+});

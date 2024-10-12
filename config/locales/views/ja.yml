@@ -1,4 +1,26 @@
 ja:
+  helpers:
+    submit:
+      create: 登録
+      submit: 保存
+      update: 更新
+    label:
+      email: メールアドレス
+      password: パスワード
+  defaults:
+    post: 投稿
+    flash_message:
+      created: "%{item}を作成しました"
+      not_created: "%{item}を作成出来ませんでした"
+      require_login: ログインしてください
+  header:
+    login: ログイン
+    logout: ログアウト
+    board: 掲示板
+    board_index: 掲示板一覧
+    create_board: 掲示板作成
+    bookmark_index: ブックマーク一覧
+    profile: プロフィール
   bagel_shops:
     index:
       title: 店舗一覧
