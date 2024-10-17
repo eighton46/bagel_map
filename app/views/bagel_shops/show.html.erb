@@ -22,7 +22,7 @@
         <p>評価がありません</p>
       <% end %>
 
-      <div class="mb-3 pt-3 border-top border-3">
+      <div class="mb-3 pt-3 border-top border-3 custom-border-color">
         <strong>営業時間</strong>
         <% if @opening_hours.present? %>
           <% @opening_hours.each do |opening_hour| %>
@@ -33,7 +33,7 @@
         <% end %>
       </div>
 
-      <div class="mb-3 pt-3 border-top border-3">
+      <div class="mb-3 pt-3 border-top border-3 custom-border-color">
         <strong>電話番号</strong>
         <% if @bagel_shop.formatted_phone_number.present? %>
           <p><%= @bagel_shop.formatted_phone_number %></p>
@@ -42,7 +42,7 @@
         <% end %>
       </div>
 
-      <div class="mb-3 pt-3 border-top border-3">
+      <div class="mb-3 pt-3 border-top border-3 custom-border-color">
         <strong>公式サイト・SNS</strong>
         <% if @bagel_shop.website.present? %>
           <p><%= link_to @bagel_shop.website, @bagel_shop.website %></p>
@@ -51,12 +51,12 @@
         <% end %>
       </div>
 
-      <div class="mb-3 pt-3 border-top border-3">
+      <div class="mb-3 pt-3 border-top border-3 custom-border-color">
         <strong>住所</strong>
         <p><%= @bagel_shop.address %></p>
       </div>
 
-      <div class="mb-4 pt-3 border-top border-3">
+      <div class="mb-4 pt-3 border-top border-3 custom-border-color">
         <div id="map" style="height:400px; width:100%;"></div>
       </div>
     </div>

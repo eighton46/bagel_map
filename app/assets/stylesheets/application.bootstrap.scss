@@ -101,4 +101,16 @@
 
 body {
   font-family: 'MOBO-SemiBold', sans-serif;
+  background-color: #EDE8E2; /* ベースカラーのコード */
+  color: #595959; /* 文字色のコード */
+  border-color: #595959;
+  line-height: 1.6; /* 読みやすい行間を設定 */
+}
+
+.custom-border-color {
+  border-color: #A9907E !important; /* ヘッダーのボーダー色 */
+}
+
+.card-body {
+  color: #595959 !important; /* カードの文字色 */
 }

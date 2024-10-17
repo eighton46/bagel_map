@@ -21,6 +21,9 @@ ja:
     create_board: 掲示板作成
     bookmark_index: ブックマーク一覧
     profile: プロフィール
+  static_pages:
+    privacy_policy:
+      title: プライバシー・ポリシー
   bagel_shops:
     index:
       title: 店舗一覧
