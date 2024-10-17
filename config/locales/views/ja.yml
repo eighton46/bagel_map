@@ -24,6 +24,8 @@ ja:
   static_pages:
     privacy_policy:
       title: プライバシー・ポリシー
+    terms_of_use:
+      title: 利用規約
   bagel_shops:
     index:
       title: 店舗一覧
