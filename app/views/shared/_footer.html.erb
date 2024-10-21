@@ -4,15 +4,11 @@
       <div class='col'>
         <p class='m-1'>© 2024 BAGEL MAP</p>
       </div>
-      <%
-=begin%>
- <div class='col text-end'>
-        <%= link_to '利用規約', '#', class: 'link_text me-5' %>
-        <%= link_to 'プライバシー・ポリシー', '#', class: 'link_text me-5' %>
-        <%= link_to 'お問い合わせ', '#', class: 'link_text' %>
-      </div> 
-<%
-=end%>
+      <div class='col text-end'>
+        <%= link_to '利用規約', terms_of_use_path, class: 'link_text me-5' %>
+        <%= link_to 'プライバシー・ポリシー', privacy_policy_path, class: 'link_text me-5' %>
+        <%= link_to 'お問い合わせ', 'https://forms.gle/wbYBH7aVzKSNTFGx9', target: :_blank, rel: "noopener noreferrer", class: 'link_text' %>
+      </div>
     </div>
   </div>
 </footer>
