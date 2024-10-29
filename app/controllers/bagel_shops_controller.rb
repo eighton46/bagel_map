@@ -1,6 +1,7 @@
 class BagelShopsController < ApplicationController
   def index
-    @bagel_shops = BagelShop.all.page(params[:page])
+    # @q = BagelShop.ransack(params[:q])
+    # @bagel_shops = @q.result(distinct: true).page(params[:page])
     gon.bagel_shops = BagelShop.all
     gon.api_key = ENV["GMAPS_API_KEY"]
   end

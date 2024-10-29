@@ -114,3 +114,21 @@ body {
 .card-body {
   color: #595959 !important; /* カードの文字色 */
 }
+
+.search-form-container {
+  flex-grow: 1;
+}
+
+.sort-links-container {
+  display: flex;
+  gap: 10px; /* ソートリンク間のスペース */
+}
+
+.sort-links-container a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.sort-links-container a:hover {
+  text-decoration: underline;
+}

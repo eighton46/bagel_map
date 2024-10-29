@@ -27,15 +27,20 @@ function initMap() {
     },
   };
 
-  // 現在地の取得を開始する前にローディングを表示
+  // 地図の取得を開始する前にローディングを表示
   const loadingElement = document.getElementById("loading");
   mapElement.classList.add("loading");
   loadingElement.style.display = "flex";
 
-  // 初期位置の設定
-  // デフォルトで現在地取得
-  showCurrentLocation();
-  // 現在地取得できないとき
+  // 地図の中心位置の設定
+  const inputAddress = document.getElementById("address").value;
+  if (inputAddress) { //検索ワードがある場合
+    codeAddress();
+  } else {
+    showCurrentLocation();
+  }
+
+  // 地図基本設定（現在地取得できなかったとき）
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: defaultLocation.lat, lng: defaultLocation.lng }, //東京駅
     zoom: 15,
@@ -137,7 +142,7 @@ function initMap() {
     });
   });
 
-  // ボタンを押すとshowCurrentLocation関数で現在地を取得して表示
+  // 地図上のボタンを押すとshowCurrentLocation関数で現在地を取得して表示
   const locationButton = document.createElement("button");
   locationButton.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i>';
   locationButton.classList.add("custom-map-control-button");
@@ -240,9 +245,8 @@ function isOpen(operatingHours, now = new Date()) {
   return isOpenNow;
 }
 
-// 画面表示部分
 // 地図検索
-window.codeAddress = function () {
+function codeAddress() {
   let inputAddress = document.getElementById("address").value;
 
   geocoder.geocode({ address: inputAddress }, function (results, status) {
@@ -259,12 +263,18 @@ window.codeAddress = function () {
       });
       markers.push(marker); // マーカーを配列に追加
 
+      // 位置情報が取得できたらローディングを非表示
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("map").classList.remove("loading");
+
       display.textContent = "検索結果：" + results[0].geometry.location;
     } else {
       alert("該当する結果がありませんでした：" + status);
     }
   });
 };
+
+// 画面表示部分
 
 window.initMap = initMap;
 
