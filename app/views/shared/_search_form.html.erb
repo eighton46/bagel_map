@@ -3,7 +3,7 @@
   <div class="search-form-container">
     <%= search_form_for @q, url: bagel_shops_path do |f| %>
       <div class="input-group">
-        <%= f.search_field :address_or_name_cont, class: 'form-control', placeholder: "店舗名や地名で検索", id: 'address' %>
+        <%= f.search_field :address_or_name_cont, class: 'form-control', placeholder: "店舗名や地名で検索", id: 'name_or_address' %>
         <div class="input-group-append">
           <%= f.submit class: 'btn btn-primary' %>
         </div>
@@ -12,7 +12,7 @@
     <div id="display">何かが表示される、、、、！</div>
   </div>
 
-  <!-- ソート 
+  <!-- ソート
   <div class="sort-links-container">
     <%= sort_link(@q, :rating, '評価順') %>
     <%= sort_link(@q, :distance, '距離順') %>
