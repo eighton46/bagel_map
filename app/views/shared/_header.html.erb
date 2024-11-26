@@ -6,6 +6,11 @@
       <%= image_tag 'logo.png' %>
     <% end %>
 
+    <!-- 検索フォーム -->
+    <div class="container">
+      <%= render 'shared/search_form', url: bagel_shops_path, q: @q %>
+    </div>
+
     <%
 =begin%>
  <!-- トグルボタンの設定 -->

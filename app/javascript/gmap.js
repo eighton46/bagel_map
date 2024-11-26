@@ -1,4 +1,4 @@
-let map, geocoder, centerPin, infoWindow;
+let map, geocoder, centerPin, infoWindow, lastCenter;
 let markers = [];
 const apiKey = gon.api_key;
 
@@ -27,15 +27,12 @@ function initMap() {
     },
   };
 
-  // 現在地の取得を開始する前にローディングを表示
+  // 地図の取得を開始する前にローディングを表示
   const loadingElement = document.getElementById("loading");
   mapElement.classList.add("loading");
   loadingElement.style.display = "flex";
 
-  // 初期位置の設定
-  // デフォルトで現在地取得
-  showCurrentLocation();
-  // 現在地取得できないとき
+  // 地図基本設定（現在地取得できなかったとき）
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: defaultLocation.lat, lng: defaultLocation.lng }, //東京駅
     zoom: 15,
@@ -52,10 +49,22 @@ function initMap() {
     title: "現在地",
   });
 
+  lastCenter = map.getCenter();
+
   // マップのドラッグ終了イベント
   map.addListener("dragend", function () {
     centerPin.setPosition(map.getCenter());
+    lastCenter = map.getCenter();
   });
+
+  // 地図の中心位置の設定
+  const inputSearchWords = document.getElementById("name_or_address").value;
+
+  if (inputSearchWords) { //検索ワードがある場合
+    searchAddress(lastCenter);
+  } else {
+    showCurrentLocation();
+  }
 
   // infoWindowを作成
   infoWindow = new google.maps.InfoWindow({
@@ -137,7 +146,7 @@ function initMap() {
     });
   });
 
-  // ボタンを押すとshowCurrentLocation関数で現在地を取得して表示
+  // 地図上のボタンを押すとshowCurrentLocation関数で現在地を取得して表示
   const locationButton = document.createElement("button");
   locationButton.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i>';
   locationButton.classList.add("custom-map-control-button");
@@ -240,31 +249,43 @@ function isOpen(operatingHours, now = new Date()) {
   return isOpenNow;
 }
 
-// 画面表示部分
 // 地図検索
-window.codeAddress = function () {
-  let inputAddress = document.getElementById("address").value;
+function searchAddress(centerLatLng) {
+  const searchBagelShops = gon.search_bagel_shops;
+  // console.log(searchBagelShops);
+  let bounds = new google.maps.LatLngBounds(); // 検索結果が1つ以上の場合に地図の範囲を調整するためのBoundsオブジェクトを作成
 
-  geocoder.geocode({ address: inputAddress }, function (results, status) {
-    if (status == "OK") {
-      // マーカーを作成
-      map.setCenter(results[0].geometry.location);
+  // 検索結果がない場合の処理
+  if (searchBagelShops.length === 0) {
+    display.textContent = "検索結果が見つかりませんでした。";
+    map.setCenter(centerLatLng); // 初期位置に戻す
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("map").classList.remove("loading");
+    return; // 関数をここで終了して、地図の位置を変更しない
+  }
 
-      // マーカーを追加する前に既存のマーカーをクリア
-      clearMarkers();
+  searchBagelShops.forEach(function (shop) {
+    let markerLatLng = { lat: shop.latitude, lng: shop.longitude }; // 緯度経度のデータ作成
 
-      var marker = new google.maps.Marker({
-        map: map,
-        position: results[0].geometry.location,
-      });
-      markers.push(marker); // マーカーを配列に追加
+    let marker = new google.maps.Marker({
+      position: markerLatLng,
+      map: map,
+      // icon: icon,
+    });
 
-      display.textContent = "検索結果：" + results[0].geometry.location;
-    } else {
-      alert("該当する結果がありませんでした：" + status);
-    }
+    bounds.extend(markerLatLng);
   });
-};
+
+  map.fitBounds(bounds);
+
+  // 位置情報が取得できたらローディングを非表示
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("map").classList.remove("loading");
+
+  // display.textContent = "検索結果：" + markerLatLng;
+}
+
+// 画面表示部分
 
 window.initMap = initMap;
 
