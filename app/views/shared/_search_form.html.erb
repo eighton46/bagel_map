@@ -2,14 +2,15 @@
   <!-- 検索フォーム -->
   <div class="search-form-container">
     <%= search_form_for @q, url: bagel_shops_path do |f| %>
-      <div class="input-group">
-        <%= f.search_field :address_or_name_cont, class: 'form-control', placeholder: "店舗名や地名で検索", id: 'name_or_address' %>
-        <div class="input-group-append">
-          <%= f.submit class: 'btn btn-primary' %>
-        </div>
+    <div class="input-group">
+      <%= f.search_field :address_or_name_cont, class: 'form-control', placeholder: "店舗名、地名で検索", id: 'name_or_address' %>
+      <div class="input-group-append">
+        <%= button_tag type: 'submit', class: 'btn btn-primary', name: 'search_button' do %>
+        <i class="fa-solid fa-magnifying-glass" style="color: #ede8e2;"></i>
+        <% end %>
       </div>
+    </div>
     <% end %>
-    <div id="display">何かが表示される、、、、！</div>
   </div>
 
   <!-- ソート
