@@ -6,7 +6,7 @@ const defaultLocation = { lat: 35.68123620000001, lng: 139.7671248 };
 const bagelShops = gon.bagel_shops;
 const display = document.getElementById("display");
 
-// 関数定義部分
+// 地図表示関数の定義部分
 function initMap() {
   geocoder = new google.maps.Geocoder();
   const mapElement = document.getElementById("map");
@@ -14,7 +14,7 @@ function initMap() {
     console.error("Map element not found.");
     return;
   }
-
+  
   // ピンに使用するアイコンの設定
   const icons = {
     opening_shop: {
@@ -26,132 +26,132 @@ function initMap() {
       scaledSize: new google.maps.Size(52, 52),
     },
   };
-
+  
   // 地図の取得を開始する前にローディングを表示
   const loadingElement = document.getElementById("loading");
   mapElement.classList.add("loading");
   loadingElement.style.display = "flex";
-
-  // 地図基本設定（現在地取得できなかったとき）
-  map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: defaultLocation.lat, lng: defaultLocation.lng }, //東京駅
-    zoom: 15,
-    streetViewControl: false, // ストリートビューのボタン非表示
-    mapTypeControl: false, // 地図、航空写真のボタン非表示
-    fullscreenControl: false, // フルスクリーンボタン非表示
-  });
-
-  // センターピンの表示
-  centerPin = new google.maps.Marker({
-    map: map,
-    draggable: true,
-    position: map.getCenter(), // 初期位置をマップの中心に設定
-    title: "現在地",
-  });
-
-  lastCenter = map.getCenter();
-
-  // マップのドラッグ終了イベント
-  map.addListener("dragend", function () {
-    centerPin.setPosition(map.getCenter());
-    lastCenter = map.getCenter();
-  });
-
-  // 地図の中心位置の設定
+  
+  // 地図に表示する店舗の条件分岐
   const inputSearchWords = document.getElementById("name_or_address").value;
 
   if (inputSearchWords) { //検索ワードがある場合
     searchAddress(lastCenter);
-  } else {
+  } else { //検索ワードがない場合（現在地取得の場合）
     showCurrentLocation();
-  }
-
-  // infoWindowを作成
-  infoWindow = new google.maps.InfoWindow({
-    pixelOffset: new google.maps.Size(0, -50),
-    maxWidth: 300,
-  });
-
-  // Railsから保存された店舗情報を取得して地図上にマーカーを表示
-  bagelShops.forEach(function (shop) {
-    let markerLatLng = { lat: shop.latitude, lng: shop.longitude }; // 緯度経度のデータ作成
-    let operatingHours = "";
-    let icon = icons["closed_shop"]; // デフォルトでは「閉店中」のアイコン
-    let storeStatus = "準備中";
-
-    if (shop.opening_hours) {
-      // 営業時間情報があれば営業時間をパース
-      operatingHours = parseOperatingHours(shop.opening_hours);
-
-      // 営業時間がパースできたら、営業中かどうかを判断
-      if (isOpen(operatingHours)) {
-        icon = icons["opening_shop"]; // 営業中の場合は「営業中」のアイコン
-        storeStatus = "営業中";
-      }
-    }
-
-    let marker = new google.maps.Marker({
-      position: markerLatLng,
-      map: map,
-      icon: icon,
+    
+    // 地図基本設定（現在地取得できなかったとき）
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: { lat: defaultLocation.lat, lng: defaultLocation.lng }, //東京駅
+      zoom: 15,
+      streetViewControl: false, // ストリートビューのボタン非表示
+      mapTypeControl: false, // 地図、航空写真のボタン非表示
+      fullscreenControl: false, // フルスクリーンボタン非表示
     });
-
-    // マーカーがクリックされたときに情報ウィンドウを表示
-    marker.addListener("click", function () {
-      // photo_referenceをカンマで分割して最初の画像を使用
-      if (shop.photo_references) {
-        // 画像がある場合
-        const photoReferences = shop.photo_references.split(",");
-        const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReferences[0]}&key=${apiKey}`;
-
-        // infoWindowの内容を更新
-        infoWindow.setContent(`
-        <div class="custom-info">
-          <div class="custom-info-item store_status">${storeStatus}</div>
-          <div class="custom-info-item photo">
+    
+    // センターピンの表示
+    centerPin = new google.maps.Marker({
+    map: map,
+    draggable: true,
+    position: map.getCenter(), // 初期位置をマップの中心に設定
+    title: "現在地",
+    });
+  
+    lastCenter = map.getCenter();
+    
+    // マップのドラッグ終了イベント
+    // map.addListener("dragend", function () {
+    //   centerPin.setPosition(map.getCenter());
+    //   lastCenter = map.getCenter();
+    // });
+    
+    // infoWindowを作成
+    infoWindow = new google.maps.InfoWindow({
+      pixelOffset: new google.maps.Size(0, -50),
+      maxWidth: 300,
+    });
+    
+    // Railsから保存された店舗情報を取得して地図上にマーカーを表示
+    bagelShops.forEach(function (shop) {
+      let markerLatLng = { lat: shop.latitude, lng: shop.longitude }; // 緯度経度のデータ作成
+      let operatingHours = "";
+      let icon = icons["closed_shop"]; // デフォルトでは「閉店中」のアイコン
+      let storeStatus = "準備中または不定期";
+      
+      if (shop.opening_hours) {
+        // 営業時間情報があれば営業時間をパース
+        operatingHours = parseOperatingHours(shop.opening_hours);
+        
+        // 営業時間がパースできたら、営業中かどうかを判断
+        if (isOpen(operatingHours)) {
+          icon = icons["opening_shop"]; // 営業中の場合は「営業中」のアイコン
+          storeStatus = "営業中";
+        }
+      }
+      
+      let marker = new google.maps.Marker({
+        position: markerLatLng,
+        map: map,
+        icon: icon,
+      });
+      
+      // マーカーがクリックされたときに情報ウィンドウを表示
+      marker.addListener("click", function () {
+        // photo_referenceをカンマで分割して最初の画像を使用
+        if (shop.photo_references) {
+          // 画像がある場合
+          const photoReferences = shop.photo_references.split(",");
+          const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReferences[0]}&key=${apiKey}`;
+          
+          // infoWindowの内容を更新
+          infoWindow.setContent(`
+            <div class="custom-info">
+            <div class="custom-info-item store_status">${storeStatus}</div>
+            <div class="custom-info-item photo">
             <img src="${photoUrl}" alt="${
-          shop.name
-        }" style="width:100%;height:auto;">
-          </div>
-          <div class="custom-info-item name">${shop.name}</div>
-          <div class="custom-info-item address">${shop.address}</div>
-          <div class="custom-info-item rating">⭐${
-            shop.rating ? shop.rating : "評価なし"
-          }</div>
-          <div class="custom-info-item link_to_detail">
-            <a href="/bagel_shops/${shop.id}" >店舗詳細</a>
-          </div>
-        </div>
-        `);
-      } else {
-        // 画像がない場合
-        // infoWindowの内容を更新
-        infoWindow.setContent(`
-        <div class="custom-info">
-          <div class="custom-info-item store_status">${storeStatus}</div>
-          <div class="custom-info-item name">${shop.name}</div>
-          <div class="custom-info-item address">${shop.address}</div>
-          <div class="custom-info-item rating">⭐${
-            shop.rating ? shop.rating : "評価なし"
-          }</div>
-          <div class="custom-info-item link_to_detail">
-            <a href="/bagel_shops/${shop.id}" >店舗詳細</a>
-          </div>
-        </div>
-        `);
-      }
-
-      // infoWindowを指定したマーカーの位置に表示
-      infoWindow.open(map, marker);
+              shop.name
+              }" style="width:100%;height:auto;">
+              </div>
+              <div class="custom-info-item name">${shop.name}</div>
+              <div class="custom-info-item address">${shop.address}</div>
+              <div class="custom-info-item rating">⭐${
+                shop.rating ? shop.rating : "評価なし"
+                }</div>
+                <div class="custom-info-item link_to_detail">
+                <a href="/bagel_shops/${shop.id}" >店舗詳細</a>
+                </div>
+                </div>
+                `);
+        } else {
+          // 画像がない場合
+          // infoWindowの内容を更新
+          infoWindow.setContent(`
+            <div class="custom-info">
+            <div class="custom-info-item store_status">${storeStatus}</div>
+            <div class="custom-info-item name">${shop.name}</div>
+            <div class="custom-info-item address">${shop.address}</div>
+            <div class="custom-info-item rating">⭐${
+              shop.rating ? shop.rating : "評価なし"
+              }</div>
+              <div class="custom-info-item link_to_detail">
+              <a href="/bagel_shops/${shop.id}" >店舗詳細</a>
+              </div>
+              </div>
+          `);
+        }
+        
+        // infoWindowを指定したマーカーの位置に表示
+        infoWindow.open(map, marker);
+      });
     });
-  });
-
-  // 地図上のボタンを押すとshowCurrentLocation関数で現在地を取得して表示
-  const locationButton = document.createElement("button");
-  locationButton.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i>';
-  locationButton.classList.add("custom-map-control-button");
-  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(locationButton);
-  locationButton.addEventListener("click", showCurrentLocation);
+    
+    // 地図上のボタンを押すとshowCurrentLocation関数で現在地を取得して表示
+    const locationButton = document.createElement("button");
+    locationButton.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i>';
+    locationButton.classList.add("custom-map-control-button");
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(locationButton);
+    locationButton.addEventListener("click", showCurrentLocation);
+  };
 }
 
 
