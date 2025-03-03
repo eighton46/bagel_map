@@ -6,6 +6,14 @@ class ApplicationController < ActionController::Base
     @q = BagelShop.ransack(params[:q])
     @bagel_shops = @q.result(distinct: true).page(params[:page])
 
+    if params[:q].present?
+      # gonのキャッシュを防ぐため、明示的にリセット
+      gon.clear
+      gon.search_bagel_shops = @bagel_shops
+    end
+
+    puts "gon.search_bagel_shops: #{@bagel_shops.inspect}"
+
     return unless params[:search_button]
 
     if params[:q].present? && params[:q][:address_or_name_cont].blank?
@@ -15,7 +23,5 @@ class ApplicationController < ActionController::Base
       flash[:warning] = '検索結果が見つかりませんでした'
       redirect_back(fallback_location: root_path)
     end
-
-    gon.search_bagel_shops = @bagel_shops if params[:q].present?
   end
 end
