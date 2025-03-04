@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center">
   <!-- 検索フォーム -->
   <div class="search-form-container">
-    <%= search_form_for @q, url: bagel_shops_path do |f| %>
+    <%= search_form_for @q, url: bagel_shops_path, method: :get, data: { turbo: false } do |f| %>
     <div class="input-group">
       <%= f.search_field :address_or_name_cont, class: 'form-control', placeholder: "店舗名、地名で検索", id: 'name_or_address' %>
       <div class="input-group-append">
