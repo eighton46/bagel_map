@@ -9,45 +9,45 @@
 
       <div class="card mb-4">
         <% if @bagel_shop.photo_references.present? %>
-          <%= image_tag "https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=#{@bagel_shop.photo_references.split(",").first}&key=#{ENV['GMAPS_API_KEY']}", alt: @bagel_shop.name, size: "400x400", class: "card-img-top", style: "object-fit: cover;" %>
+        <%= image_tag "https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=#{@bagel_shop.photo_references.split(",").first}&key=#{ENV['GMAPS_API_KEY']}", alt: @bagel_shop.name, size: "400x400", class: "card-img-top", style: "object-fit: cover;" %>
         <% else %>
-          <%= image_tag "bagel_shop_placeholder.jpg", class: "card-img-top", width: "400", height: "400", style: "object-fit: cover;" %>
+        <%= image_tag "bagel_shop_placeholder.jpg", class: "card-img-top", width: "400", height: "400", style: "object-fit: cover;" %>
         <% end %>
       </div>
 
       <h3 class="mb-2"><%= @bagel_shop.name %></h3>
       <% if @bagel_shop.rating.present? %>
-        <p><i class="fa-solid fa-star" style="color: #FFD43B;"></i><%= @bagel_shop.rating %> (<%= @bagel_shop.user_ratings_total %>)</p>
+      <p><i class="fa-solid fa-star" style="color: #FFD43B;"></i><%= @bagel_shop.rating %> (<%= @bagel_shop.user_ratings_total %>)</p>
       <% else %>
-        <p>評価がありません</p>
+      <p>評価がありません</p>
       <% end %>
 
       <div class="mb-3 pt-3 border-top border-3 custom-border-color">
         <strong>営業時間</strong>
         <% if @opening_hours.present? %>
-          <% @opening_hours.each do |opening_hour| %>
-            <p class="mb-0"><%= opening_hour %></p>
-          <% end %>
+        <% @opening_hours.each do |opening_hour| %>
+        <p class="mb-0"><%= opening_hour %></p>
+        <% end %>
         <% else %>
-          <p>営業時間の情報がありません</p>
+        <p>営業時間の情報がありません</p>
         <% end %>
       </div>
 
       <div class="mb-3 pt-3 border-top border-3 custom-border-color">
         <strong>電話番号</strong>
         <% if @bagel_shop.formatted_phone_number.present? %>
-          <p><%= @bagel_shop.formatted_phone_number %></p>
+        <p><%= @bagel_shop.formatted_phone_number %></p>
         <% else %>
-          <p>電話番号がありません</p>
+        <p>電話番号がありません</p>
         <% end %>
       </div>
 
       <div class="mb-3 pt-3 border-top border-3 custom-border-color">
         <strong>公式サイト・SNS</strong>
         <% if @bagel_shop.website.present? %>
-          <p><%= link_to @bagel_shop.website, @bagel_shop.website %></p>
+        <p><%= link_to @bagel_shop.website, @bagel_shop.website, target: :_blank, rel: "noopener noreferrer"%></p>
         <% else %>
-          <p>Webサイト・SNSがありません</p>
+        <p>Webサイト・SNSがありません</p>
         <% end %>
       </div>
 
@@ -63,15 +63,15 @@
 
     <%
 =begin%>
- <div class="col-lg-4">
+    <div class="col-lg-4">
       <div class="list-group mb-4">
         <%= link_to 'コメント投稿', '#', class: 'list-group-item list-group-item-action' %>
         <%= link_to 'お気に入り追加', '#', class: 'list-group-item list-group-item-action' %>
         <%= link_to 'お気に入り削除', '#', class: 'list-group-item list-group-item-action text-danger' %>
         <%= link_to 'ルート検索', '#', class: 'list-group-item list-group-item-action' %>
       </div>
-    </div> 
-<%
+    </div>
+    <%
 =end%>
   </div>
 </div>
