@@ -178,6 +178,12 @@ function initMap() {
     google.maps.event.addListenerOnce(map, "idle", function () {
       if (!bounds.isEmpty()) {
         map.fitBounds(bounds);
+
+        // ズームレベルの制限
+        const minZoomLevel = 17; // ズームレベル17以上にしない
+        if (map.getZoom() > minZoomLevel) {
+          map.setZoom(minZoomLevel);
+        }
       } else {
         console.warn("No valid locations to fitBounds.");
       }
