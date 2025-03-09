@@ -132,3 +132,16 @@ body {
 .sort-links-container a:hover {
   text-decoration: underline;
 }
+
+.btn-reset {
+  background-color: #FFFFFF; /* ページネーションのアクティブ色 */
+  color: #A9907E; /* テキストカラー */
+  padding: 0.5rem; /* パディングを設定 */
+  border-radius: 0.25rem; /* 角を丸くする */
+  font-size: 1rem; /* フォントサイズを設定 */
+}
+
+.btn-reset:hover {
+  background-color: #8F7C68; /* 少し暗いトーンに */
+  color: #FFFFFF; /* テキストは白のまま */
+}
