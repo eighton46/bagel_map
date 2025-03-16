@@ -7,6 +7,9 @@ const display = document.getElementById("display");
 
 // 地図表示関数の定義部分
 function initMap() {
+  if (lastCenter) {
+    console.log("initMap実行時座標：", lastCenter.lat(), lastCenter.lng());
+  }
   // ページのロードがTurboだったらreturn
   document.addEventListener("turbo:load", function () {
     console.log("ページがロードされました（turbo:load）");
@@ -40,20 +43,24 @@ function initMap() {
 
   // mapの定義と基本設定（現在地取得できなかったとき）
   map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: defaultLocation.lat, lng: defaultLocation.lng }, //東京駅
+    center: lastCenter
+      ? { lat: lastCenter.lat(), lng: lastCenter.lng() }
+      : { lat: defaultLocation.lat, lng: defaultLocation.lng }, // lastCenterがあれば使用
     zoom: 15,
     streetViewControl: false, // ストリートビューのボタン非表示
     mapTypeControl: false, // 地図、航空写真のボタン非表示
     fullscreenControl: false, // フルスクリーンボタン非表示
   });
 
-  lastCenter = map.getCenter();
-
   // マップのドラッグ終了イベント
   map.addListener("dragend", function () {
-    // centerPin.setPosition(map.getCenter());
     lastCenter = map.getCenter();
+    console.log("ドラッグ後座標：", lastCenter.lat(), lastCenter.lng());
   });
+
+  if (lastCenter) {
+    console.log("ドラッグ後座標：", lastCenter.lat(), lastCenter.lng());
+  }
 
   // infoWindowを作成
   infoWindow = new google.maps.InfoWindow({
@@ -83,9 +90,6 @@ function initMap() {
     mode = "reset"; // ③リセットtrue
     console.log("mode：", mode);
   }
-  const inputSearchWords = document.getElementById("name_or_address").value; // 検索フォームに入力があるか
-  // const mode = gon.reset_button_clicked; // リセットボタンが押されたか
-  // console.log("mode：", mode);
 
   switch (mode) {
     case "currentLocation":
@@ -172,7 +176,7 @@ function initMap() {
       break;
 
     case "wordSearch":
-      //分岐の確認（ワード検索）
+      // ワード検索の場合
       console.log("ワード検索");
 
       //検索ワードがある場合
@@ -280,6 +284,8 @@ function initMap() {
       google.maps.event.addListenerOnce(map, "idle", function () {
         if (!bounds.isEmpty()) {
           map.fitBounds(bounds);
+          lastCenter = map.getCenter();
+          console.log("検索後座標：", lastCenter.lat(), lastCenter.lng());
 
           // ズームレベルの制限
           const minZoomLevel = 17; // ズームレベル17以上にしない
@@ -301,7 +307,6 @@ function initMap() {
       console.log("リセット");
 
       bagelShops = gon.bagel_shops;
-      showCurrentLocation();
 
       // Railsから保存された店舗情報を取得して地図上にマーカーを表示
       bagelShops.forEach(function (shop) {
@@ -377,6 +382,12 @@ function initMap() {
           infoWindow.open(map, markers);
         });
       });
+
+      console.log("リセット後座標：", lastCenter.lat(), lastCenter.lng());
+
+      // 位置情報が取得できたらローディングを非表示
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("map").classList.remove("loading");
       break;
 
     default:
@@ -437,6 +448,9 @@ function showCurrentLocation(){
         if (centerPin) {
           centerPin.setPosition(pos);
         }
+
+        lastCenter = map.getCenter();
+        console.log("現在地取得後座標：", lastCenter.lat(), lastCenter.lng());
 
         // 位置情報が取得できたらローディングを非表示
         document.getElementById("loading").style.display = "none";
