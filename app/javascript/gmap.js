@@ -1,4 +1,5 @@
 let map, geocoder, centerPin, infoWindow, lastCenter, bagelShops, searchBagelShops, mode;
+let lastZoom;
 let markers = [];
 const apiKey = gon.api_key;
 
@@ -41,12 +42,16 @@ function initMap() {
     },
   };
 
+  console.log("zoom:", lastZoom);
+
   // mapの定義と基本設定（現在地取得できなかったとき）
   map = new google.maps.Map(document.getElementById("map"), {
     center: lastCenter
       ? { lat: lastCenter.lat(), lng: lastCenter.lng() }
       : { lat: defaultLocation.lat, lng: defaultLocation.lng }, // lastCenterがあれば使用
-    zoom: 15,
+    zoom: lastZoom
+      ? lastZoom
+      : 15, // lastCenterがあれば使用
     streetViewControl: false, // ストリートビューのボタン非表示
     mapTypeControl: false, // 地図、航空写真のボタン非表示
     fullscreenControl: false, // フルスクリーンボタン非表示
@@ -55,12 +60,9 @@ function initMap() {
   // マップのドラッグ終了イベント
   map.addListener("dragend", function () {
     lastCenter = map.getCenter();
+    lastZoom = map.getZoom();
     console.log("ドラッグ後座標：", lastCenter.lat(), lastCenter.lng());
   });
-
-  if (lastCenter) {
-    console.log("ドラッグ後座標：", lastCenter.lat(), lastCenter.lng());
-  }
 
   // infoWindowを作成
   infoWindow = new google.maps.InfoWindow({
@@ -291,6 +293,8 @@ function initMap() {
           const minZoomLevel = 17; // ズームレベル17以上にしない
           if (map.getZoom() > minZoomLevel) {
             map.setZoom(minZoomLevel);
+            lastZoom = map.getZoom();
+            console.log("zoom:", lastZoom);
           }
         } else {
           console.warn("No valid locations to fitBounds.");
@@ -449,8 +453,11 @@ function showCurrentLocation(){
           centerPin.setPosition(pos);
         }
 
+        // 現在地の座標を記録
         lastCenter = map.getCenter();
+        lastZoom = map.getZoom();
         console.log("現在地取得後座標：", lastCenter.lat(), lastCenter.lng());
+        console.log("zoom:", lastZoom);
 
         // 位置情報が取得できたらローディングを非表示
         document.getElementById("loading").style.display = "none";
