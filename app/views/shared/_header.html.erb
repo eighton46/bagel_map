@@ -14,11 +14,13 @@
       </div>
 
       <!-- リセットボタン -->
+      <% if current_page?(bagel_shops_path) %>
       <div>
         <%= link_to bagel_shops_path(reset: true), class: 'btn btn-reset btn-lg p-2 ms-2' do %>
         <i class=" fa-solid fa-rotate-right"></i> リセット
         <% end %>
       </div>
+      <% end %>
     </div>
 
     <%
