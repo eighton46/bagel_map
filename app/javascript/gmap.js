@@ -51,7 +51,7 @@ function initMap() {
       : { lat: defaultLocation.lat, lng: defaultLocation.lng }, // lastCenterがあれば使用
     zoom: lastZoom
       ? lastZoom
-      : 15, // lastCenterがあれば使用
+      : 15, // lastZoomがあれば使用
     streetViewControl: false, // ストリートビューのボタン非表示
     mapTypeControl: false, // 地図、航空写真のボタン非表示
     fullscreenControl: false, // フルスクリーンボタン非表示
