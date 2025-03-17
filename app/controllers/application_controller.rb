@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
       gon.search_bagel_shops = @bagel_shops
     end
 
-    puts "gon.search_bagel_shops: #{@bagel_shops.inspect}"
+    # puts "gon.search_bagel_shops: #{@bagel_shops.inspect}"
 
     return unless params[:search_button]
 
