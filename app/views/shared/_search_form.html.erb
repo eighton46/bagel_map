@@ -13,9 +13,9 @@
     <% end %>
   </div>
 
-  <!-- ソート
+  <!-- ソート -->
   <div class="sort-links-container">
-    <%= sort_link(@q, :rating, '評価順') %>
-    <%= sort_link(@q, :distance, '距離順') %>
-  </div> -->
-</div>
+    <%= sort_link(@q, :rating, '評価順', default_order: :desc) %>
+    <%= sort_link(@q, :user_ratings_total, 'コメント数順', default_order: :desc) %>
+    <!-- <%= sort_link(@q, :distance, '距離順') %> </div> -->
+  </div>
