@@ -14,8 +14,10 @@
   </div>
 
   <!-- ソート -->
+  <% if current_page?(bagel_shops_path) %>
   <div class="sort-links-container">
     <%= sort_link(@q, :rating, '評価順', default_order: :desc) %>
     <%= sort_link(@q, :user_ratings_total, 'コメント数順', default_order: :desc) %>
     <!-- <%= sort_link(@q, :distance, '距離順') %> </div> -->
   </div>
+  <% end %>
