@@ -6,21 +6,21 @@
     <%= image_tag 'logo.png' %>
     <% end %>
 
-    <!-- 検索フォーム & リセットボタンを横並び -->
-    <div class="container d-flex flex-row align-items-center justify-content-start">
+    <!-- 検索フォーム & リセットボタン -->
+    <div class="container d-flex align-items-center">
       <!-- 検索フォーム -->
-      <div class="w-auto">
+      <div class="flex-grow-1">
         <%= render 'shared/search_form', url: bagel_shops_path, q: @q %>
-      </div>
 
-      <!-- リセットボタン -->
-      <% if current_page?(bagel_shops_path) %>
-      <div>
-        <%= link_to bagel_shops_path(reset: true), class: 'btn btn-reset btn-lg p-2 ms-2' do %>
-        <i class=" fa-solid fa-rotate-right"></i> リセット
+        <!-- リセットボタン -->
+        <% if current_page?(bagel_shops_path) %>
+        <div class="ms-auto">
+          <%= link_to bagel_shops_path(reset: true), class: 'btn-reset' do %>
+          <i class="fa-solid fa-rotate-right"></i> 店舗リセット
+          <% end %>
+        </div>
         <% end %>
       </div>
-      <% end %>
     </div>
 
     <%
