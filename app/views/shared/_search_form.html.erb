@@ -10,6 +10,16 @@
         <% end %>
       </div>
     </div>
+
+    <div class="input-group mb-3">
+      <%= f.label :rating_gteq, "評価が以上" %>
+      <%= f.number_field :rating_gteq, class: "form-control", step: "0.1", placeholder: "例: 4.0" %>
+    </div>
+
+    <div class="input-group mb-3">
+      <%= f.label :user_ratings_total_gteq, "コメント数が以上" %>
+      <%= f.number_field :user_ratings_total_gteq, class: "form-control", placeholder: "例: 50" %>
+    </div>
     <% end %>
   </div>
 
