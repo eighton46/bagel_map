@@ -206,3 +206,39 @@ body {
     gap: 5px;
   }
 }
+
+/* 絞り込みボタン */
+.btn-filter {
+  background-color: #EDE8E2;
+  color: #A9907E;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  // border: 2px solid #A9907E;
+}
+
+.btn-filter:hover {
+  background-color: #8F7C68;
+  color: #EDE8E2;
+}
+
+/* 絞り込みドロップダウン */
+.dropdown-menu {
+  background-color: #EDE8E2;
+  border: 2px solid #A9907E;
+  border-radius: 10px;
+  padding: 15px;
+  min-width: 320px;
+}
+
+/* 入力欄のデザイン統一 */
+.dropdown-menu .form-control {
+  border: 2px solid #A9907E;
+  background-color: #fff;
+}
+
+.dropdown-menu .form-control:focus {
+  border-color: #8F7C68;
+  box-shadow: 0 0 5px rgba(143, 124, 104, 0.5);
+}
