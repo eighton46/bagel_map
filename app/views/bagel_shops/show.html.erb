@@ -4,7 +4,7 @@
 <% content_for(:title, @bagel_shop.name) %>
 <div class="container mt-4">
   <div class="row">
-    <div class="col-lg-8 offset-lg-2">
+    <div class="col-lg-7 offset-lg-2">
       <h2 class="mb-4"><%= t('.title') %></h2>
 
       <div class="card mb-4">
@@ -61,17 +61,15 @@
       </div>
     </div>
 
-    <%
-=begin%>
-    <div class="col-lg-4">
+    <div class="col-lg-3">
       <div class="list-group mb-4">
-        <%= link_to 'コメント投稿', '#', class: 'list-group-item list-group-item-action' %>
-        <%= link_to 'お気に入り追加', '#', class: 'list-group-item list-group-item-action' %>
-        <%= link_to 'お気に入り削除', '#', class: 'list-group-item list-group-item-action text-danger' %>
-        <%= link_to 'ルート検索', '#', class: 'list-group-item list-group-item-action' %>
+        <!--
+          <%= link_to 'コメント投稿', '#', class: 'list-group-item list-group-item-action' %>
+          <%= link_to 'お気に入り追加', '#', class: 'list-group-item list-group-item-action' %>
+          <%= link_to 'お気に入り削除', '#', class: 'list-group-item list-group-item-action text-danger' %>
+          -->
+        <%= link_to 'ルート検索', "https://www.google.com/maps/dir/?api=1&destination=#{@bagel_shop.latitude}-#{@bagel_shop.longitude}&destination_place_id=#{@bagel_shop.place_id}", class: 'list-group-item list-group-item-action' %>
       </div>
     </div>
-    <%
-=end%>
   </div>
 </div>
