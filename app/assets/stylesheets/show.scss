@@ -1,0 +1,51 @@
+/* 店舗画像 */
+.shop-image {
+  object-fit: cover;
+  width: 100%;
+  height: 400px;
+}
+
+/* 店舗地図 */
+.shop-map {
+  height: 400px;
+  width: 100%;
+}
+
+/* 店舗詳細部分のスタイル */
+.shop-info-section {
+  padding-top: 15px;
+  border-top: 3px solid #A9907E;
+}
+
+/* スライドバー */
+.sticky-sidebar {
+  position: sticky;
+  top: 3rem; // 上部の余白
+  max-height: 80vh; // 画面の80%の高さまで表示
+  overflow-y: auto; // 必要ならスクロール可能に
+}
+
+/* ルートリンクボタン */
+.btn-route {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px; // アイコンとテキストの間隔
+  width: 200px; // ボタンの幅を調整
+  padding: 8px 12px; // 内側の余白を調整
+  font-size: 16px; // 文字サイズを適切に
+  border-radius: 20px; // 角を丸くする
+  background-color: #A9907E; // ボタンの背景色
+  color: white; // 文字色
+  text-decoration: none; // 下線を消す
+  border: none; // 枠線なし
+  // transition: background-color 0.3s ease;
+}
+
+.btn-route:hover {
+  background-color: #8F7C68; // ホバー時の色
+}
+
+.btn-route i {
+  font-size: 20px; // アイコンのサイズを大きくする
+}
