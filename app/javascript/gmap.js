@@ -293,9 +293,11 @@ function initMap() {
           const minZoomLevel = 17; // ズームレベル17以上にしない
           if (map.getZoom() > minZoomLevel) {
             map.setZoom(minZoomLevel);
-            lastZoom = map.getZoom();
             console.log("zoom:", lastZoom);
           }
+
+          // ズームレベルをlastZoomに保持
+          lastZoom = map.getZoom();
         } else {
           console.warn("No valid locations to fitBounds.");
         }
