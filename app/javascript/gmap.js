@@ -172,7 +172,7 @@ function initMap() {
           }
 
           // infoWindowを指定したマーカーの位置に表示
-          infoWindow.open(map, markers);
+          infoWindow.open(map, marker);
         });
       });
       break;
@@ -385,7 +385,7 @@ function initMap() {
           }
 
           // infoWindowを指定したマーカーの位置に表示
-          infoWindow.open(map, markers);
+          infoWindow.open(map, marker);
         });
       });
 
