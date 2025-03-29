@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 
     return unless params[:search_button]
 
-    if params[:q].present? && params[:q][:address_or_name_cont].blank?
+    if params[:q][:address_or_name_cont].blank? && params[:q][:rating_gteq].blank? && params[:q][:user_ratings_total_gteq].blank?
       flash[:warning] = '検索ワードが入力されていません'
       redirect_back(fallback_location: root_path)
     elsif @bagel_shops.empty?
