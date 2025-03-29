@@ -20,8 +20,8 @@
 /* スライドバー */
 .sticky-sidebar {
   position: sticky;
-  top: 3rem; // 上部の余白
-  max-height: 80vh; // 画面の80%の高さまで表示
+  top: 8rem; // 上部の余白
+  height: calc(100vh - 8rem); // 画面の高さからヘッダー分を引いた値を適用
   overflow-y: auto; // 必要ならスクロール可能に
 }
 
