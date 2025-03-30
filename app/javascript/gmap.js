@@ -42,34 +42,6 @@ function initMap() {
     },
   };
 
-  console.log("zoom:", lastZoom);
-
-  // mapの定義と基本設定（現在地取得できなかったとき）
-  map = new google.maps.Map(document.getElementById("map"), {
-    center: lastCenter
-      ? { lat: lastCenter.lat(), lng: lastCenter.lng() }
-      : { lat: defaultLocation.lat, lng: defaultLocation.lng }, // lastCenterがあれば使用
-    zoom: lastZoom
-      ? lastZoom
-      : 15, // lastZoomがあれば使用
-    streetViewControl: false, // ストリートビューのボタン非表示
-    mapTypeControl: false, // 地図、航空写真のボタン非表示
-    fullscreenControl: false, // フルスクリーンボタン非表示
-  });
-
-  // マップのドラッグ終了イベント
-  map.addListener("dragend", function () {
-    lastCenter = map.getCenter();
-    lastZoom = map.getZoom();
-    console.log("ドラッグ後座標：", lastCenter.lat(), lastCenter.lng());
-  });
-
-  // infoWindowを作成
-  infoWindow = new google.maps.InfoWindow({
-    pixelOffset: new google.maps.Size(0, -50),
-    maxWidth: 300,
-  });
-
   // 地図の取得を開始する前にローディングを表示
   const loadingElement = document.getElementById("loading");
   mapElement.classList.add("loading");
@@ -92,6 +64,36 @@ function initMap() {
     mode = "reset"; // ③リセットtrue
     console.log("mode：", mode);
   }
+
+  console.log("zoom:", lastZoom);
+
+  // mapの定義と基本設定（現在地取得できなかったとき）
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: lastCenter
+      ? { lat: lastCenter.lat(), lng: lastCenter.lng() }
+      : { lat: defaultLocation.lat, lng: defaultLocation.lng }, // lastCenterがあれば使用
+    zoom: mode === "currentLocation"
+      ? 15
+      : lastZoom
+        ? lastZoom
+        : 15, // 現在地取得モードなら15、それ以外はlastZoomを使う
+    streetViewControl: false, // ストリートビューのボタン非表示
+    mapTypeControl: false, // 地図、航空写真のボタン非表示
+    fullscreenControl: false, // フルスクリーンボタン非表示
+  });
+
+  // マップのドラッグ終了イベント
+  map.addListener("dragend", function () {
+    lastCenter = map.getCenter();
+    lastZoom = map.getZoom();
+    console.log("ドラッグ後座標：", lastCenter.lat(), lastCenter.lng());
+  });
+
+  // infoWindowを作成
+  infoWindow = new google.maps.InfoWindow({
+    pixelOffset: new google.maps.Size(0, -50),
+    maxWidth: 300,
+  });
 
   switch (mode) {
     case "currentLocation":
