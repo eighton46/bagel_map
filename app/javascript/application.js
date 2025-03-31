@@ -3,6 +3,7 @@ import "@hotwired/turbo-rails"
 import "./controllers"
 import * as bootstrap from "bootstrap"
 
+// 絞り込み検索フォームにマイナスの値が入力されたら「０」を返す
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll("input[type='number']").forEach((input) => {
     input.addEventListener("input", function () {
@@ -11,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+// 絞り込み検索のドロップダウン内のクリアボタンを押すと、フォームがクリアされる
 document.addEventListener("DOMContentLoaded", function () {
   const resetButton = document.getElementById("reset-button");
 
@@ -20,4 +22,16 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("user_ratings_total_form").value = "";
     });
   }
+});
+
+// 入力値のあるフォームを選択したときに入力値をハイライトする
+document.addEventListener("DOMContentLoaded", function () {
+  // フォーム要素を取得
+  const inputFields = document.querySelectorAll(".auto-select");
+
+  inputFields.forEach((input) => {
+    input.addEventListener("focus", function () {
+      this.select(); // フォームの中身を全選択
+    });
+  });
 });
