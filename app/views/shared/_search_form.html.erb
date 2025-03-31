@@ -3,7 +3,7 @@
   <%= search_form_for @q, url: bagel_shops_path, method: :get, data: { turbo: false } do |f| %>
   <div class="search-form-container d-flex align-items-center">
     <div class="input-group">
-      <%= f.search_field :address_or_name_cont, class: 'form-control', placeholder: "店舗名、地名で検索", id: 'name_or_address' %>
+      <%= f.search_field :address_or_name_cont, class: 'form-control auto-select', placeholder: "店舗名、地名で検索", id: 'name_or_address' %>
       <div class="input-group-append">
         <%= button_tag type: 'submit', class: 'btn btn-primary', name: 'search_button' do %>
         <i class="fa-solid fa-magnifying-glass"></i>
@@ -20,18 +20,24 @@
       <!-- 絞り込みフォーム（ドロップダウンの中） -->
       <div class="dropdown-menu p-4" style="min-width: 250px;">
         <div class="mb-3">
-          <%= f.label :rating_gteq, "評価" %>
+          <%= f.label :rating, "評価" %>
           <div class="input-group">
-            <%= f.number_field :rating_gteq, class: "form-control", step: "0.1", placeholder: "例: 4.0" %>
+            <%= f.number_field :rating_gteq, class: "form-control auto-select", id: "rating_form", step: "0.1", placeholder: "例: 4.0" %>
             <span class="input-group-text">以上</span>
           </div>
         </div>
 
-        <%= f.label :user_ratings_total_gteq, "コメント数" %>
+        <%= f.label :user_ratings_total, "評価数" %>
         <div class="input-group">
-          <%= f.number_field :user_ratings_total_gteq, class: "form-control", placeholder: "例: 50" %>
+          <%= f.number_field :user_ratings_total_gteq, class: "form-control auto-select", id: "user_ratings_total_form", placeholder: "例: 50" %>
           <span class="input-group-text">以上</span>
         </div>
+
+        <!-- リセットボタン -->
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-clear mt-3" id="reset-button">クリア</button>
+        </div>
+
       </div>
     </div>
     <% end %>
@@ -41,7 +47,7 @@
   <% if current_page?(bagel_shops_path) %>
   <div class="sort-links-container">
     <%= sort_link(@q, :rating, '評価順', default_order: :desc) %>
-    <%= sort_link(@q, :user_ratings_total, 'コメント数順', default_order: :desc) %>
+    <%= sort_link(@q, :user_ratings_total, '評価数順', default_order: :desc) %>
     <!-- <%= sort_link(@q, :distance, '距離順') %> </div> -->
   </div>
   <% end %>
