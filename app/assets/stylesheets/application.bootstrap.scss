@@ -243,3 +243,19 @@ body {
   border-color: #8F7C68;
   box-shadow: 0 0 5px rgba(143, 124, 104, 0.5);
 }
+
+.dropdown-menu .btn-clear {
+  background-color: #fff;
+  border: 2px solid #A9907E;
+  color: #A9907E;
+  height: 40px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.dropdown-menu .btn-clear:hover {
+  background-color: #8F7C68;
+  color: #EDE8E2;
+}

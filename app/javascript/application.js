@@ -10,3 +10,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const resetButton = document.getElementById("reset-button");
+
+  if (resetButton) {
+    resetButton.addEventListener("click", function () {
+      document.getElementById("rating_form").value = "";
+      document.getElementById("user_ratings_total_form").value = "";
+    });
+  }
+});
