@@ -48,17 +48,18 @@ function initMap() {
   loadingElement.style.display = "flex";
 
   // 地図に表示する店舗の条件分岐
+
+  console.log("search_bagel_shops:", gon.search_bagel_shops);
+
   if (
-    !document.getElementById("name_or_address").value &&
-    !gon.reset_button_clicked
+    !gon.search_bagel_shops && !gon.reset_button_clicked
   ) {
-    mode = "currentLocation"; // ①検索ワードなし、リセットfalse
+    mode = "currentLocation"; // ①検索結果なし、リセットfalse
     console.log("mode：", mode);
   } else if (
-    document.getElementById("name_or_address").value &&
-    !gon.reset_button_clicked
+    gon.search_bagel_shops && !gon.reset_button_clicked
   ) {
-    mode = "wordSearch"; // ②検索ワードあり、リセットfalse
+    mode = "search"; // ②検索結果あり、リセットfalse
     console.log("mode：", mode);
   } else {
     mode = "reset"; // ③リセットtrue
@@ -94,6 +95,8 @@ function initMap() {
     pixelOffset: new google.maps.Size(0, -50),
     maxWidth: 300,
   });
+
+  console.log("search_bagel_shops:", gon.search_bagel_shops)
 
   switch (mode) {
     case "currentLocation":
@@ -148,7 +151,9 @@ function initMap() {
               <div class="custom-info-item name">${shop.name}</div>
               <div class="custom-info-item address">${shop.address}</div>
               <div class="custom-info-item rating">⭐${
-                shop.rating ? shop.rating : "評価なし"
+                shop.rating
+                  ? `${shop.rating} (${shop.user_ratings_total})`
+                  : "評価なし"
               }</div>
                 <div class="custom-info-item link_to_detail">
                 <a href="/bagel_shops/${shop.id}" >店舗詳細</a>
@@ -164,7 +169,9 @@ function initMap() {
             <div class="custom-info-item name">${shop.name}</div>
             <div class="custom-info-item address">${shop.address}</div>
             <div class="custom-info-item rating">⭐${
-              shop.rating ? shop.rating : "評価なし"
+              shop.rating
+                ? `${shop.rating} (${shop.user_ratings_total})`
+                : "評価なし"
             }</div>
               <div class="custom-info-item link_to_detail">
               <a href="/bagel_shops/${shop.id}" >店舗詳細</a>
@@ -179,9 +186,9 @@ function initMap() {
       });
       break;
 
-    case "wordSearch":
-      // ワード検索の場合
-      console.log("ワード検索");
+    case "search":
+      // ワード検索 or 絞り込み検索の場合
+      console.log("ワード検索 or 絞り込み検索");
 
       //検索ワードがある場合
       searchBagelShops = gon.search_bagel_shops || [];
@@ -244,7 +251,9 @@ function initMap() {
               <div class="custom-info-item name">${shop.name}</div>
               <div class="custom-info-item address">${shop.address}</div>
               <div class="custom-info-item rating">⭐${
-                shop.rating ? shop.rating : "評価なし"
+                shop.rating
+                  ? `${shop.rating} (${shop.user_ratings_total})`
+                  : "評価なし"
               }</div>
               <div class="custom-info-item link_to_detail">
               <a href="/bagel_shops/${shop.id}" >店舗詳細</a>
@@ -260,7 +269,9 @@ function initMap() {
               <div class="custom-info-item name">${shop.name}</div>
               <div class="custom-info-item address">${shop.address}</div>
               <div class="custom-info-item rating">⭐${
-                shop.rating ? shop.rating : "評価なし"
+                shop.rating
+                  ? `${shop.rating} (${shop.user_ratings_total})`
+                  : "評価なし"
               }</div>
               <div class="custom-info-item link_to_detail">
               <a href="/bagel_shops/${shop.id}" >店舗詳細</a>
@@ -361,7 +372,9 @@ function initMap() {
               <div class="custom-info-item name">${shop.name}</div>
               <div class="custom-info-item address">${shop.address}</div>
               <div class="custom-info-item rating">⭐${
-                shop.rating ? shop.rating : "評価なし"
+                shop.rating
+                  ? `${shop.rating} (${shop.user_ratings_total})`
+                  : "評価なし"
               }</div>
                 <div class="custom-info-item link_to_detail">
                 <a href="/bagel_shops/${shop.id}" >店舗詳細</a>
@@ -377,7 +390,9 @@ function initMap() {
             <div class="custom-info-item name">${shop.name}</div>
             <div class="custom-info-item address">${shop.address}</div>
             <div class="custom-info-item rating">⭐${
-              shop.rating ? shop.rating : "評価なし"
+              shop.rating
+                ? `${shop.rating} (${shop.user_ratings_total})`
+                : "評価なし"
             }</div>
               <div class="custom-info-item link_to_detail">
               <a href="/bagel_shops/${shop.id}" >店舗詳細</a>
