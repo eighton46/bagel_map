@@ -68,8 +68,11 @@
           <%= link_to 'お気に入り追加', '#', class: 'list-group-item list-group-item-action' %>
           <%= link_to 'お気に入り削除', '#', class: 'list-group-item list-group-item-action text-danger' %>
           -->
-        <%= link_to "https://www.google.com/maps/dir/?api=1&destination=#{@bagel_shop.latitude}-#{@bagel_shop.longitude}&destination_place_id=#{@bagel_shop.place_id}", class: 'btn btn-route', target: :_blank, rel: "noopener noreferrer" do %>
+        <%= link_to "https://www.google.com/maps/dir/?api=1&destination=#{@bagel_shop.latitude}-#{@bagel_shop.longitude}&destination_place_id=#{@bagel_shop.place_id}", class: 'btn btn-route mb-2', target: :_blank, rel: "noopener noreferrer" do %>
         <i class="fa-solid fa-route"></i>ルート
+        <% end %>
+        <%= link_to "https://www.google.com/maps/search/?api=1&query=#{@bagel_shop.latitude}-#{@bagel_shop.longitude}&query_place_id=#{@bagel_shop.place_id}", class: 'btn btn-route', target: :_blank, rel: "noopener noreferrer" do %>
+        <i class="fa-brands fa-google"></i>マップで開く
         <% end %>
       </div>
     </div>
