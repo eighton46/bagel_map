@@ -1,16 +1,30 @@
-let map, geocoder, centerPin, infoWindow, lastCenter, bagelShops, searchBagelShops, mode;
-let lastZoom;
+let map, geocoder, centerPin, infoWindow, bagelShops, searchBagelShops, mode;
 let markers = [];
 const apiKey = gon.api_key;
 
-const defaultLocation = { lat: 35.68123620000001, lng: 139.7671248 };
 const display = document.getElementById("display");
+
+// デフォルト値（東京駅）
+const defaultCenter = { lat: 35.6812, lng: 139.7671 };
+const defaultZoom = 15;
+
+// 保存された値を取得
+let savedCenter = localStorage.getItem("lastCenter");
+let savedZoom = localStorage.getItem("lastZoom");
+
+// 取得できた場合は変換して適用
+let initialCenter = savedCenter ? JSON.parse(savedCenter) : defaultCenter;
+let initialZoom = savedZoom ? parseInt(savedZoom) : defaultZoom;
 
 // 地図表示関数の定義部分
 function initMap() {
-  if (lastCenter) {
-    console.log("initMap実行時座標：", lastCenter.lat(), lastCenter.lng());
+  if (initialCenter) {
+    console.log("initMap実行時中心座標：", initialCenter);
   }
+  if (initialZoom) {
+    console.log("initMap実行時Zoom：", initialZoom);
+  }
+
   // ページのロードがTurboだったらreturn
   document.addEventListener("turbo:load", function () {
     console.log("ページがロードされました（turbo:load）");
@@ -48,9 +62,6 @@ function initMap() {
   loadingElement.style.display = "flex";
 
   // 地図に表示する店舗の条件分岐
-
-  console.log("search_bagel_shops:", gon.search_bagel_shops);
-
   if (
     !gon.search_bagel_shops && !gon.reset_button_clicked
   ) {
@@ -66,28 +77,30 @@ function initMap() {
     console.log("mode：", mode);
   }
 
-  console.log("zoom:", lastZoom);
-
   // mapの定義と基本設定（現在地取得できなかったとき）
   map = new google.maps.Map(document.getElementById("map"), {
-    center: lastCenter
-      ? { lat: lastCenter.lat(), lng: lastCenter.lng() }
-      : { lat: defaultLocation.lat, lng: defaultLocation.lng }, // lastCenterがあれば使用
+    center: initialCenter,
     zoom: mode === "currentLocation"
       ? 15
-      : lastZoom
-        ? lastZoom
-        : 15, // 現在地取得モードなら15、それ以外はlastZoomを使う
+      : initialZoom,
     streetViewControl: false, // ストリートビューのボタン非表示
     mapTypeControl: false, // 地図、航空写真のボタン非表示
     fullscreenControl: false, // フルスクリーンボタン非表示
   });
 
-  // マップのドラッグ終了イベント
-  map.addListener("dragend", function () {
-    lastCenter = map.getCenter();
-    lastZoom = map.getZoom();
-    console.log("ドラッグ後座標：", lastCenter.lat(), lastCenter.lng());
+  // ズームレベルを動的に保存
+  google.maps.event.addListener(map, "zoom_changed", function () {
+    let lastZoom = map.getZoom();
+    localStorage.setItem("lastZoom", lastZoom); // ズームレベルを保存
+    console.log("ズームレベルを保存しました：", lastZoom);
+  });
+
+  // 中心座標を動的に保存
+  google.maps.event.addListener(map, "center_changed", function () {
+    let center = map.getCenter();
+    let lastCenter = { lat: center.lat(), lng: center.lng() };
+    localStorage.setItem("lastCenter", JSON.stringify(lastCenter)); // 中心座標を保存
+    console.log("中心座標を保存しました：", lastCenter);
   });
 
   // infoWindowを作成
@@ -95,8 +108,6 @@ function initMap() {
     pixelOffset: new google.maps.Size(0, -50),
     maxWidth: 300,
   });
-
-  console.log("search_bagel_shops:", gon.search_bagel_shops)
 
   switch (mode) {
     case "currentLocation":
@@ -192,7 +203,7 @@ function initMap() {
 
       //検索ワードがある場合
       searchBagelShops = gon.search_bagel_shops || [];
-      bounds = new google.maps.LatLngBounds(); // 検索結果が1つ以上の場合に地図の範囲を調整するためのBoundsオブジェクトを作成
+      let bounds = new google.maps.LatLngBounds(); // 検索結果が1つ以上の場合に地図の範囲を調整するためのBoundsオブジェクトを作成
 
       console.log("boundsの内容確認：", bounds);
       console.log("検索結果の店舗データ:", searchBagelShops);
@@ -299,18 +310,13 @@ function initMap() {
       google.maps.event.addListenerOnce(map, "idle", function () {
         if (!bounds.isEmpty()) {
           map.fitBounds(bounds);
-          lastCenter = map.getCenter();
-          console.log("検索後座標：", lastCenter.lat(), lastCenter.lng());
 
           // ズームレベルの制限
           const minZoomLevel = 17; // ズームレベル17以上にしない
           if (map.getZoom() > minZoomLevel) {
             map.setZoom(minZoomLevel);
-            console.log("zoom:", lastZoom);
           }
 
-          // ズームレベルをlastZoomに保持
-          lastZoom = map.getZoom();
         } else {
           console.warn("No valid locations to fitBounds.");
         }
@@ -406,7 +412,9 @@ function initMap() {
         });
       });
 
-      console.log("リセット後座標：", lastCenter.lat(), lastCenter.lng());
+      // リセット時の座標、ズームの復元
+      map.setCenter(initialCenter);
+      map.setZoom(initialZoom);
 
       // 位置情報が取得できたらローディングを非表示
       document.getElementById("loading").style.display = "none";
@@ -471,12 +479,6 @@ function showCurrentLocation(){
         if (centerPin) {
           centerPin.setPosition(pos);
         }
-
-        // 現在地の座標を記録
-        lastCenter = map.getCenter();
-        lastZoom = map.getZoom();
-        console.log("現在地取得後座標：", lastCenter.lat(), lastCenter.lng());
-        console.log("zoom:", lastZoom);
 
         // 位置情報が取得できたらローディングを非表示
         document.getElementById("loading").style.display = "none";
