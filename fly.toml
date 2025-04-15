@@ -21,6 +21,7 @@ primary_region = 'nrt'
 
 [[vm]]
   size = 'shared-cpu-1x'
+  memory = 512
 
 [deploy]
   release_command = './bin/rails db:prepare'
