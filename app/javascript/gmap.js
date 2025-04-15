@@ -148,7 +148,8 @@ function initMap() {
           if (shop.photo_references) {
             // 画像がある場合
             const photoReferences = shop.photo_references.split(",");
-            const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReferences[0]}&key=${apiKey}`;
+            // const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReferences[0]}&key=${apiKey}`;
+            const photoUrl = `/photos/${photoReferences[0]}`;
 
             // infoWindowの内容を更新
             infoWindow.setContent(`
@@ -248,7 +249,8 @@ function initMap() {
             if (shop.photo_references) {
               // 画像がある場合
               const photoReferences = shop.photo_references.split(",");
-              const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReferences[0]}&key=${apiKey}`;
+              // const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReferences[0]}&key=${apiKey}`;
+              const photoUrl = `/photos/${photoReferences[0]}`;
 
               // infoWindowの内容を更新
               infoWindow.setContent(`
@@ -364,7 +366,8 @@ function initMap() {
           if (shop.photo_references) {
             // 画像がある場合
             const photoReferences = shop.photo_references.split(",");
-            const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReferences[0]}&key=${apiKey}`;
+            // const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReferences[0]}&key=${apiKey}`;
+            const photoUrl = `/photos/${photoReferences[0]}`;
 
             // infoWindowの内容を更新
             infoWindow.setContent(`

@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   get 'privacy_policy', to: 'static_pages#privacy_policy'
   get 'terms_of_use', to: 'static_pages#terms_of_use'
   get 'search', to: 'application#set_search'
+  get 'photos/:ref', to: 'photos#show', as: 'place_photo'
 end
