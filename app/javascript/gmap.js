@@ -148,7 +148,6 @@ function initMap() {
           if (shop.photo_references) {
             // 画像がある場合
             const photoReferences = shop.photo_references.split(",");
-            // const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReferences[0]}&key=${apiKey}`;
             const photoUrl = `/photos/${photoReferences[0]}`;
 
             // infoWindowの内容を更新
@@ -249,7 +248,6 @@ function initMap() {
             if (shop.photo_references) {
               // 画像がある場合
               const photoReferences = shop.photo_references.split(",");
-              // const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReferences[0]}&key=${apiKey}`;
               const photoUrl = `/photos/${photoReferences[0]}`;
 
               // infoWindowの内容を更新
@@ -366,7 +364,6 @@ function initMap() {
           if (shop.photo_references) {
             // 画像がある場合
             const photoReferences = shop.photo_references.split(",");
-            // const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoReferences[0]}&key=${apiKey}`;
             const photoUrl = `/photos/${photoReferences[0]}`;
 
             // infoWindowの内容を更新
@@ -450,8 +447,8 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.setPosition(pos);
   infoWindow.setContent(
     browserHasGeolocation
-      ? "Error: 現在地を取得できませんでした"
-      : "Error: お使いのブラウザでは現在地取得がサポートされていません"
+      ? "現在地を取得できませんでした"
+      : "お使いのブラウザでは現在地取得がサポートされていません"
   );
   infoWindow.open(map);
 }
@@ -505,11 +502,20 @@ function showCurrentLocation(){
 // 入力データをパースしてオブジェクトに変換する関数
 function parseOperatingHours(operatingHoursString) {
   const operatingHours = {};
+
+  // 中身が無い、または文字列でない場合は空で返す
+  if (!operatingHoursString || typeof operatingHoursString !== "string") {
+    console.warn("営業時間が未設定または形式不正です:", operatingHoursString);
+    return operatingHours;
+  }
+
   const lines = operatingHoursString.split("\n");
 
-  lines.forEach(line => {
+  lines.forEach((line) => {
     const [day, hours] = line.split(": ");
-    operatingHours[day] = hours;
+    if (day && hours) {
+      operatingHours[day] = hours;
+    }
   });
 
   return operatingHours;
@@ -517,25 +523,43 @@ function parseOperatingHours(operatingHoursString) {
 
 // 現在の曜日と時間から営業中かどうか判断する関数
 function isOpen(operatingHours, now = new Date()) {
-  const daysOfWeek = ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"];
-  const currentDayOfWeek = daysOfWeek[now.getDay()];
+  const daysOfWeek = [
+    "日曜日",
+    "月曜日",
+    "火曜日",
+    "水曜日",
+    "木曜日",
+    "金曜日",
+    "土曜日",
+  ];
+  const currentDay = daysOfWeek[now.getDay()];
   const currentHour = now.getHours();
   const currentMinute = now.getMinutes();
 
-  // 当日の営業時間を取得
-  const hours = operatingHours[currentDayOfWeek];
+  const todayHours = operatingHours[currentDay];
 
-  if (hours === "定休日") {
+  if (!todayHours || todayHours === "定休日" || !todayHours.includes("～")) {
     return false;
   }
 
-  const [openTime, closeTime] = hours.split("～").map(time => time.trim());
-  const [openHour, openMinute] = openTime.split("時").map(part => parseInt(part));
-  const [closeHour, closeMinute] = closeTime.split("時").map(part => parseInt(part));
+  const [openTime, closeTime] = todayHours.split("～").map((t) => t.trim());
 
-  // 現在時刻が営業中かどうかをチェック
-  const isOpenNow = (currentHour > openHour || (currentHour === openHour && currentMinute >= openMinute)) &&
-                    (currentHour < closeHour || (currentHour === closeHour && currentMinute <= closeMinute));
+  if (!openTime.includes("時") || !closeTime.includes("時")) {
+    return false;
+  }
+
+  const [openHour, openMinute = 0] = openTime
+    .split("時")
+    .map((n) => parseInt(n));
+  const [closeHour, closeMinute = 0] = closeTime
+    .split("時")
+    .map((n) => parseInt(n));
+
+  const isOpenNow =
+    (currentHour > openHour ||
+      (currentHour === openHour && currentMinute >= openMinute)) &&
+    (currentHour < closeHour ||
+      (currentHour === closeHour && currentMinute <= closeMinute));
 
   return isOpenNow;
 }
