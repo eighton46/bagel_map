@@ -2,10 +2,7 @@
   <div id="bagel_shop-id-<% bagel_shop.id %>">
     <div class="card">
       <% if bagel_shop.photo_references.present? %>
-      <%= image_tag place_photo_path(ref: bagel_shop.photo_references.split(",").first), alt: bagel_shop.name, class: "card-img-top", width: "300", height:"300", style: "object-fit: cover;" %>
-      <!--
-      <%= image_tag "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=#{bagel_shop.photo_references.split(",").first}&key=#{ENV['GMAPS_API_KEY']}", alt: bagel_shop.name, class: "card-img-top", width: "300", height:"300", style: "object-fit: cover;" %>
-      -->
+      <%= image_tag place_photo_path(ref: bagel_shop.photo_references.split(",").first), alt: bagel_shop.name, class: "card-img-top", width: "300", height:"300", style: "object-fit: cover;", loading: "lazy" %>
       <% else %>
       <%= image_tag "bagel_shop_placeholder.jpg", class: "card-img-top", width: "300", height: "300", style: "object-fit: cover;" %>
       <% end %>
