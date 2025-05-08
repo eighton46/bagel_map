@@ -1,165 +1,134 @@
-## サービス概要
+# BagelMap（ベーグルマップ）
 
-ベーグル専門店を可視化する地図アプリ。ベーグル好きの人に、現在地近辺のお店を地図上に表示させることで外出先等でふとしたタイミングでベーグル専門店を検索することができます。
+![screenshot](app/assets/images/ogp_bagel.png)
 
-## このサービスへの思い・作りたい理由
+## 🔍 サービス概要
 
-母がベーグル好きで（ベーグルにハマって）、自分も一緒に食べるようになりました。スーパーやコンビニでも売っていますが、ベーグル専門店のベーグルを食べたときにとても美味しかったの覚えています。以降、都内などに遠出した際に、ベーグル専門店を探して買って帰るようになりました。しかし、ベーグル専門店は比較的小さなスペースで個人でやられている事が多いので、駅から少し距離があったり、入り組んだ路地の中にあったりすることもよくあり、探さないと見つからないことが多いです。また、某マップアプリで検索すると上手く見つからなかったり（検索から漏れたり）、検索範囲が狭いとベーグル専門店以外（ベーカリー、カフェ etc）が検索結果に表示されることがありもどかしさを感じていました。そこで、「いっそのことベーグル専門店だけマップ上にすぐ表示されればいいのにな」と思ったのが作りたい理由です。
+**BagelMap** は、ベーグル専門店を地図上で簡単に検索できるWebアプリです。現在地や指定したエリア周辺のベーグル専門店を地図上ですぐに確認でき、ベーグル好きの方が「行ってみたい！」と思えるお店を探すお手伝いをします。
 
-## ユーザー層について
+---
 
-ベーグル好きの方、ベーグル専門店に訪れてみたい方。ベーグルは卵、牛乳、バターを使用していないので、比較的罪悪感なく食べられます。ベーグル好きの方にはもちろん、興味が持ってお店に訪れてみたい方の助けになったらと思いました。
+## 💡 サービスを作った背景
 
-## サービスの利用イメージ
+ベーグルにハマった母と一緒に専門店を探していたとき、「普通の地図アプリでは見つけづらい」「情報が少ない」と感じたのがきっかけです。
 
-現在地や検索した場所の周辺のベーグル専門店を地図上に表示します。ユーザーが外出先、在宅時関係なくベーグル専門店に行ってみたいと思ったときに検索できます。また、お店の情報（評価、レビュー含む）を確認でき、現在地からのルート検索ができます。
+Googleマップでは検索がうまくヒットしないことも多く、ベーカリーやカフェが混ざってしまうことも……。「それならベーグル専門店だけに絞った検索ができるアプリを作ろう！」と思い立ち、開発に至りました。
 
-## ユーザーの獲得について
+---
 
-SNS で公開します。
+## 👤 想定ユーザー
 
-## サービスの差別化ポイント・推しポイント
+- ベーグルが好きな人
+- ベーグル専門店をめぐってみたい人
+- 健康志向の人や卵・乳製品を控えたい人（ベーグルは卵・バター・ミルク不使用が多め）
 
-類似サービスとして、以下のものが挙げられます。
-- Google マップ
-- 食べログ
-- PUG BAGLE Works さんの Google My Maps
+---
 
-対して、当サービスの差別化ポイントは以下の通りです。
-- ベーグル専門店検索時の煩わしさの解消（ベーカリー、カフェが検索に引っかからない）
-- 最寄りのお店を優先して検索する機能
-- 営業時間の可視化
+## 🚀 実装機能
 
-## 機能候補
+- GoogleMapsによる地図表示
+- 現在地取得 & 周辺の店舗表示
+- キーワード検索機能（店名・住所）
+- GoogleMapの評価やレビュー数による絞り込み
+- 検索結果一覧と地図上のピン表示
+- 営業中／閉店中アイコンの色分け
+- 店舗の基本情報表示（評価、住所、営業時間など）
 
-### MVP リリース
+---
 
-**【すべてのユーザー】**
+## 📸 実際の画面と機能紹介
 
-- 検索機能
-  - 現在地または目的地付近のスポット検索
-  - Mapと一覧表示（表示範囲のスポットのみ）
-  - 上記のスポットの詳細表示
+| 現在地取得・周辺店舗の表示 |
+| :---: |
+| [![Image from Gyazo](https://i.gyazo.com/f5f38ee2caae966dc8d6c4ff693fc857.gif)](https://gyazo.com/f5f38ee2caae966dc8d6c4ff693fc857) |
+| <p align="left">「現在地を取得」ボタンをクリックすると、現在位置を中心に地図が表示されます。地図にはベーグル専門店が表示されていて、現在地周辺の店舗を検索できます。</p> |
+<br>
 
-### 本リリース
+| キーワード検索と地図上での詳細遷移 | |
+| :---: | :---: |
+| 地図からアクセス | 一覧からアクセス |
+| [![Image from Gyazo](https://i.gyazo.com/11c596da2597b82e97a1fd6c67d02b21.gif)](https://gyazo.com/11c596da2597b82e97a1fd6c67d02b21) | [![Image from Gyazo](https://i.gyazo.com/4f98914965942a313ebc9df25f75f1be.gif)](https://gyazo.com/4f98914965942a313ebc9df25f75f1be) |
+| <p align="left">店名や住所で検索を行うと、地図上に該当店舗が表示され、ピンをクリックすることで詳細ページにアクセスできます。</p> | <p align="left">検索結果は地図とともにリストとしても表示され、そこから店舗の詳細ページにアクセスすることも可能です。</p> |
+<br>
 
-**【すべてのユーザー】**
+| 絞り込み検索（評価・レビュー数） |
+| :---: |
+| [![Image from Gyazo](https://i.gyazo.com/308f0a486bc9658fa0083aa5a9dfab80.gif)](https://gyazo.com/308f0a486bc9658fa0083aa5a9dfab80) |
+| <p align="left">Googleの評価・レビュー数で店舗を絞り込むことができ、高評価のお店を見つけやすくします。</p> |
+<br>
 
-- 検索機能
-  - 評価（星）から絞り込み
-  - 営業時間による表示変更（ex. 営業中：青、営業終了：赤　もしくは営業時間外を非表示）
-  - タグ検索
-- ルート機能
-  - 現在地または目的地からスポットまでの経路を表示（Google マップのルートに飛ばす？）
+| ソート機能（評価・レビュー数） |
+| :---: |
+| [![Image from Gyazo](https://i.gyazo.com/d14f7392ddba7c2c3e26a9da8944411f.gif)](https://gyazo.com/d14f7392ddba7c2c3e26a9da8944411f) |
+| <p align="left">評価やレビュー数順で並び替えができ、条件に合うお店を見つけやすくなります。</p> |
+<br>
 
-**【登録ユーザーのみ】**
+| 地図のリセット・現在地の再取得 | |
+| :---: | :---: |
+| [![Image from Gyazo](https://i.gyazo.com/f0bb213191a137c74720c5b70cc95194.gif)](https://gyazo.com/f0bb213191a137c74720c5b70cc95194) | [![Image from Gyazo](https://i.gyazo.com/bbb43a07783afb675b8bb0ec55c7eefc.gif)](https://gyazo.com/bbb43a07783afb675b8bb0ec55c7eefc) |
+| <p align="left">リセットボタンで地図と検索結果を初期状態に戻すことができます。</p> | <p align="left">現在地取得ボタンで再度現在地を取得することができます。</p> |
+<br>
 
-- 評価機能
+| 営業状況によるピンの色分け |
+| :---: |
+| [![Image from Gyazo](https://i.gyazo.com/eb8e7aae9153e78f86594c1093200eab.gif)](https://gyazo.com/eb8e7aae9153e78f86594c1093200eab) |
+| <p align="left">営業中の店舗は茶色、閉店中はグレーで表示され、直感的に開いているお店がわかるよう工夫しています。</p> |
+<br>
 
-  - コメント
-  - タグ（ex. 「やわらかめ」、「ふつう」、「かため」の 3 つから 1 つ選択し、割合を表示）
+| GoogleMaps連携 | |
+| ルート検索 | GoogleMapsの店舗情報にアクセス |
+| :---: | :---: |
+| [![Image from Gyazo](https://i.gyazo.com/93223bfb9498627c25ae2947c13d1ca1.gif)](https://gyazo.com/93223bfb9498627c25ae2947c13d1ca1) | [![Image from Gyazo](https://i.gyazo.com/93b7102f695e4a8d27077ea0e1159d5d.gif)](https://gyazo.com/93b7102f695e4a8d27077ea0e1159d5d) |
+| <p align="left">各店舗ページにはGoogleMapsのルート検索へのリンクがあり、ナビとして活用できます。</p> | <p align="left">各店舗ページにはGoogleMapsの店舗情報へのリンクがあり、店舗情報を取得できます。</p> |
 
-- スポットをお気に入りに追加
-- マイページの編集
-  - コメント、タグ、お気に入りリストを編集・削除
-  - プロフィールの変更
+---
 
-**【管理ユーザーのみ】**
+## 🖥 技術スタック
 
-- 登録ユーザーの検索、一覧、詳細、編集
-- スポットの検索、一覧、詳細、編集、削除
-- コメントの検索、一覧、詳細、編集、削除
-- 管理ユーザーの一覧、詳細、編集、削除
-- 新しいスポットを追加（Google マップ上のカテゴリーとしてはベーグル専門店ではないが、ベーグルが有名なベーカリーやカフェの追加）
+| 分類 | 技術 |
+|------|------|
+| フロントエンド | HTML / CSS / JavaScript |
+| バックエンド | Ruby / Ruby on Rails |
+| インフラ | Fly.io |
+| 外部API | Google Maps Platform（Places API / Maps API） |
 
-## 機能の実装方針予定
-- バックエンド
-  - Ruby
-  - Ruby on Rails
-- フロントエンド
-  - HotWire
-- インフラ
-  - Fly.io
-- API
-  - Google Maps Platform
+---
 
-## 画面遷移図
-https://www.figma.com/design/fUJwAjQd0BwRJ7LpGOf2pv/%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3?node-id=0-1&t=5DstWTUJ0hwCyyRt-1
+## 🗺 地図・位置情報のこだわりポイント
 
-## ER図
+- Google Maps API を用いたピンの表示
+- 営業時間を自動判定して色分け（営業中：茶色／営業時間外：グレー）
+- ピンをクリックで画像＋詳細情報を表示
+
+---
+
+## 📌 ER図
+
 ```mermaid
 erDiagram
 
-  USERS {
-    integer id PK
-    string name
-    string email
-    string crypted_password
-    string avatar
-    integer role
-    string salt
-    datetime created_at
-    datetime updated_at
-    string reset_password_token
-    datetime reset_password_token_expires_at
-    datetime reset_password_email_sent_at
-    integer access_count_to_reset_password_page
-  }
-
   BAGELSHOPS {
     integer id PK
-    string name "店名"
-    string address "住所"
-    float latitude "緯度"
-    float longitude "経度"
-    string place_id "Google Places APIの一意識別子"
-    string opening_hours "開店時間"
-    string photo_reference "写真"
-    integer rating "評価"
-    integer user_ratings_total "レビュー総数"
-    string website "WEBサイト"
-    string formatted_phone_number "電話番号"
-    datetime last_updated_at "最終更新日"
-    datetime created_at
-    datetime updated_at
-  }
-
-  REVIEWS {
-    integer id PK
-    integer user_id FK
-    integer bagel_shop_id FK
-    text comment
-    datetime created_at
-    datetime updated_at
-  }
-
-  TAGS {
-    integer id PK
     string name
+    string address
+    float latitude
+    float longitude
+    string place_id
+    string opening_hours
+    string photo_references
+    integer rating
+    integer user_ratings_total
+    string website
+    string formatted_phone_number
     datetime created_at
     datetime updated_at
   }
-
-  REVIEWTAGS {
-    integer id PK
-    integer review_id FK
-    integer tag_id FK
-    datetime created_at
-    datetime updated_at
-  }
-
-  FAVORITES {
-    integer id PK
-    integer user_id FK
-    integer bagel_shop_id FK
-    datetime created_at
-    datetime updated_at
-  }
-
-  USERS ||--o{ REVIEWS : "has many"
-  BAGELSHOPS ||--o{ REVIEWS : "has many"
-  USERS ||--o{ FAVORITES : "has many"
-  BAGELSHOPS ||--o{ FAVORITES : "has many"
-  REVIEWS ||--o{ REVIEWTAGS : "has many"
-  TAGS ||--o{ REVIEWTAGS : "has many"
 ```
+
+---
+
+## 🗒 補足：プロジェクト開始当初のREADME
+
+プロジェクトの構想段階で作成した初期READMEも、開発の背景や思考過程を知る参考として以下に掲載しています。
+
+➡ [Start_README.md を読む](./Start_README.md)
