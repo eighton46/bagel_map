@@ -79,7 +79,7 @@ namespace :populate_bagelshops do
       [result, existing_shop]
     end
 
-    csv_path = 'lib/bagel_shop_in_kanto_1.csv'
+    csv_path = 'lib/bagel_shop_in_kanto.csv'
     original_lines = File.readlines(csv_path)
     updated_lines = []
     saved_count = 0
